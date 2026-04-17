@@ -7,7 +7,6 @@ import (
 	"github.com/redis/go-redis/v9"
 	"github.com/zero7cola/gin-admin-core/config"
 	"github.com/zero7cola/gin-admin-core/core"
-	"github.com/zero7cola/gin-admin-core/modules/adminUser"
 	"github.com/zero7cola/gin-admin-core/pkg/database"
 	"gorm.io/gorm"
 )
@@ -20,7 +19,6 @@ type App struct {
 	middlewares []gin.HandlerFunc
 	modules     []core.Module
 	db          *gorm.DB
-	config      *config.Config
 	redis       *redis.Client
 }
 
@@ -30,10 +28,6 @@ func (a *App) DB() *gorm.DB {
 
 func (a *App) Redis() *redis.Client {
 	return a.redis
-}
-
-func (a *App) Config() *config.Config {
-	return a.config
 }
 
 func (a *App) Group(path string) *gin.RouterGroup {
@@ -63,7 +57,6 @@ func WithPrefix(prefix string) Option {
 }
 
 func registerBuiltinModules(app *App) {
-	app.Register(adminUser.Module{})
 }
 
 func initDB(cfg *config.Config) *gorm.DB {
@@ -73,7 +66,6 @@ func initDB(cfg *config.Config) *gorm.DB {
 func newApp(r *gin.Engine, prefix string, cfg *config.Config) *App {
 	return &App{
 		engine: r,
-		config: cfg,
 		prefix: prefix,
 	}
 }
@@ -102,7 +94,7 @@ func Init(r *gin.Engine, cfg *config.Config, opts ...Option) {
 
 	// 注册外部模块
 	for _, m := range app.modules {
-		m.Register(app)
+		m.Register(r)
 	}
 }
 
