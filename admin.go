@@ -1,36 +1,55 @@
 package admin
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+	"github.com/zero7cola/gin-admin-core/core"
+	"github.com/zero7cola/gin-admin-core/modules/adminUser"
+)
 
-type Module func(rg *gin.RouterGroup)
+var builtinModules = []core.Module{}
 
-// 内置模块（统一管理）
-var builtinModules = []Module{
-	// 在这里放内置模块
-	// health.Register,
-	// auth.Register,
+// 注册内置模块
+func RegisterBuiltin(mods ...core.Module) {
+	builtinModules = append(builtinModules, mods...)
 }
 
-// 提供方法注册内置模块（避免循环依赖）
-func RegisterBuiltin(modules ...Module) {
-	builtinModules = append(builtinModules, modules...)
-}
-
-// Register
-func Register(r *gin.Engine, prefix string, modules ...Module) {
+func Register(r *gin.Engine, prefix string, modules ...core.Module) {
 	if prefix == "" {
 		prefix = "/admin"
 	}
 
 	root := r.Group(prefix)
 
-	// 1️⃣ 先加载内置模块
+	// 1️⃣ 内置模块
 	for _, m := range builtinModules {
-		m(root)
+		registerModule(root, m)
 	}
 
-	// 2️⃣ 再加载业务模块
+	// 2️⃣ 业务模块
 	for _, m := range modules {
-		m(root)
+		registerModule(root, m)
 	}
+}
+
+// 核心逻辑
+func registerModule(root *gin.RouterGroup, m core.Module) {
+	prefix := m.Prefix()
+
+	// 自动补 /
+	if prefix != "" && prefix[0] != '/' {
+		prefix = "/" + prefix
+	}
+
+	group := root
+	if prefix != "" {
+		group = root.Group(prefix)
+	}
+
+	m.Register(group)
+}
+
+func init() {
+	RegisterBuiltin(
+		&adminUser.Module{},
+	)
 }

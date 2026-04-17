@@ -6,10 +6,17 @@ import (
 
 type Module struct{}
 
+func (m *Module) Name() string {
+	return "adminUser"
+}
+
+func (m *Module) Prefix() string {
+	return "/user"
+}
+
 func (m *Module) Register(rg *gin.RouterGroup) {
-	g := rg.Group("/user")
 
 	uc := new(AdminUserController)
 
-	g.GET("/users", uc.Index)
+	rg.GET("/users", uc.Index)
 }

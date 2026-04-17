@@ -1,14 +1,10 @@
 package adminRole
 
 import (
-	"github.com/gin-gonic/gin"
 	"github.com/zero7cola/gin-admin-core/modules/base"
 
 	"github.com/zero7cola/gin-admin-core/modules/adminMenu"
 	"github.com/zero7cola/gin-admin-core/modules/adminPermission"
-	"github.com/zero7cola/gin-admin-core/pkg/app"
-	"github.com/zero7cola/gin-admin-core/pkg/database"
-	"github.com/zero7cola/gin-admin-core/pkg/paginator"
 )
 
 type AdminRole struct {
