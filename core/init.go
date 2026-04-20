@@ -23,7 +23,7 @@ func LoadConfig(path string) (*InitConfig, error) {
 	}
 
 	var cfg InitConfig
-	if err := v.Unmarshal(&cfg); err != nil {
+	if err := v.Unmarshal(&cfg.Config); err != nil {
 		return nil, err
 	}
 
