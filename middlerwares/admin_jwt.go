@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/zero7cola/gin-admin-core/config"
 	"github.com/zero7cola/gin-admin-core/model/adminUser"
 	"github.com/zero7cola/gin-admin-core/pkg/helpers"
 	"github.com/zero7cola/gin-admin-core/pkg/jwt"
@@ -31,7 +30,7 @@ func AuthAdminJWT() gin.HandlerFunc {
 
 			// JWT 解析失败，有错误发生
 			if err != nil {
-				response.AuthFail(c, fmt.Sprintf("请查看 %v 相关的接口认证文档 path：%s", config.GetString("app.name"), path))
+				response.AuthFail(c, fmt.Sprintf("请查看相关的接口认证文档 path：%s", path))
 				return
 			}
 

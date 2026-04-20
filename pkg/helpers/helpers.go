@@ -12,8 +12,6 @@ import (
 	"reflect"
 	"strings"
 	"time"
-
-	"github.com/zero7cola/gin-admin-core/config"
 )
 
 // Empty 类似于 PHP 的 empty() 函数
@@ -142,41 +140,4 @@ func FindElement(slice []string, element string) int {
 		}
 	}
 	return -1
-}
-
-// URL 传参 path 拼接站点的 URL
-func URL(path string) string {
-	return config.GetString("app.url") + "/" + path
-}
-
-// VADMINURL 拼接带 admin 标示 URL
-func VADMINURL(path string) string {
-	return URL("/admin/" + path)
-}
-
-// V1URL 拼接带 v1 标示 URL
-func V1URL(path string) string {
-	return URL("/v1/" + path)
-}
-
-func IsLocal() bool {
-	return config.Get("app.env") == "local"
-}
-
-func IsProduction() bool {
-	return config.Get("app.env") == "production"
-}
-
-func IsTesting() bool {
-	return config.Get("app.env") == "testing"
-}
-
-func IsDebug() bool {
-	return config.GetBool("debug") == true
-}
-
-// TimenowInTimezone 获取当前时间，支持时区
-func TimenowInTimezone() time.Time {
-	chinaTimezone, _ := time.LoadLocation(config.GetString("app.timezone"))
-	return time.Now().In(chinaTimezone)
 }

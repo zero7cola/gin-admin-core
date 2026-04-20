@@ -3,12 +3,13 @@ package paginator
 
 import (
 	"fmt"
-	"github.com/zero7cola/gin-admin-core/config"
 	"math"
 	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
+	"github.com/zero7cola/gin-admin-core/core"
+	"github.com/zero7cola/gin-admin-core/model/config"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
@@ -66,11 +67,11 @@ func Paginate(c *gin.Context, db *gorm.DB, data interface{}, baseURL string, per
 
 	// 查询数据库
 	err := p.query.Preload(clause.Associations). // 读取关联
-							Order(p.Sort + " " + p.Order). // 排序
-							Limit(p.PerPage).
-							Offset(p.Offset).
-							Find(data).
-							Error
+		Order(p.Sort + " " + p.Order). // 排序
+		Limit(p.PerPage).
+		Offset(p.Offset).
+		Find(data).
+		Error
 
 	// 数据库出错
 	if err != nil {
@@ -94,8 +95,8 @@ func (p *Paginator) initProperties(perPage int, baseURL string) {
 	p.PerPage = p.getPerPage(perPage)
 
 	// 排序参数（控制器中以验证过这些参数，可放心使用）
-	p.Order = p.ctx.DefaultQuery(config.GetString("paging.url_query_order"), "asc")
-	p.Sort = p.ctx.DefaultQuery(config.GetString("paging.url_query_sort"), "id")
+	p.Order = p.ctx.DefaultQuery(core.Global.Config.Paging.UrlQueryOrder, "asc")
+	p.Sort = p.ctx.DefaultQuery(core.Global.Config.Paging.UrlQuerySort, "id")
 
 	p.TotalCount = p.getTotalCount()
 	p.TotalPage = p.getTotalPage()
@@ -105,14 +106,14 @@ func (p *Paginator) initProperties(perPage int, baseURL string) {
 
 func (p Paginator) getPerPage(perPage int) int {
 	// 优先使用请求 per_page 参数
-	queryPerpage := p.ctx.Query(config.GetString("paging.url_query_per_page"))
+	queryPerpage := p.ctx.Query(core.Global.Config.Paging.UrlQueryPerPage)
 	if len(queryPerpage) > 0 {
 		perPage = cast.ToInt(queryPerpage)
 	}
 
 	// 没有传参，使用默认
 	if perPage <= 0 {
-		perPage = config.GetInt("paging.perpage")
+		perPage = core.Global.Config.Paging.PerPage
 	}
 
 	return perPage
@@ -121,7 +122,7 @@ func (p Paginator) getPerPage(perPage int) int {
 // getCurrentPage 返回当前页码
 func (p Paginator) getCurrentPage() int {
 	// 优先取用户请求的 page
-	page := cast.ToInt(p.ctx.Query(config.GetString("paging.url_query_page")))
+	page := cast.ToInt(p.ctx.Query(core.Global.Config.Paging.UrlQueryPage))
 	if page <= 0 {
 		// 默认为 1
 		page = 1
@@ -161,9 +162,9 @@ func (p Paginator) getTotalPage() int {
 // 兼容 URL 带与不带 `?` 的情况
 func (p *Paginator) formatBaseURL(baseURL string) string {
 	if strings.Contains(baseURL, "?") {
-		baseURL = baseURL + "&" + config.GetString("paging.url_query_page") + "="
+		baseURL = baseURL + "&" + core.Global.Config.Paging.UrlQueryPage + "="
 	} else {
-		baseURL = baseURL + "?" + config.GetString("paging.url_query_page") + "="
+		baseURL = baseURL + "?" + core.Global.Config.Paging.UrlQueryPage + "="
 	}
 	return baseURL
 }

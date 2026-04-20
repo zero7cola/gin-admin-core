@@ -3,11 +3,13 @@ package service
 import (
 	"context"
 	"errors"
-	"github.com/zero7cola/gin-admin-core/config"
+	"strings"
+
+	"github.com/zero7cola/gin-admin-core/core"
+	"github.com/zero7cola/gin-admin-core/model/config"
 	fileModel "github.com/zero7cola/gin-admin-core/model/file"
 	"github.com/zero7cola/gin-admin-core/pkg/file"
 	"github.com/zero7cola/gin-admin-core/pkg/helpers"
-	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
@@ -19,7 +21,7 @@ type FileService struct {
 
 func NewFileService(drive ...string) *FileService {
 
-	fileDrive := config.GetString("storage.driver")
+	fileDrive := core.Global.Config.Storage.Driver
 
 	if len(drive) > 0 {
 		fileDrive = drive[0]
@@ -28,14 +30,14 @@ func NewFileService(drive ...string) *FileService {
 	fileConfig := file.Config{
 		Driver: fileDrive,
 		LocalConfig: file.LocalConfig{
-			BasePath:      config.GetString("storage.local.path"),
-			PublicBaseURL: config.GetString("storage.local.domain"),
+			BasePath:      core.Global.Config.Storage.Local.Path,
+			PublicBaseURL: core.Global.Config.Storage.Local.Domain,
 		},
 		OssConfig: file.OssConfig{
-			Region:     config.GetString("storage.oss.region"),
-			BucketName: config.GetString("storage.oss.bucket"),
-			Key:        config.GetString("storage.oss.key_id"),
-			Secret:     config.GetString("storage.oss.key_secret"),
+			Region:     core.Global.Config.Storage.Oss.Region,
+			BucketName: core.Global.Config.Storage.Oss.Bucket,
+			Key:        core.Global.Config.Storage.Oss.KeyId,
+			Secret:     core.Global.Config.Storage.Oss.KeySecret,
 		},
 	}
 	fileStorage := file.NewStorage(fileConfig)

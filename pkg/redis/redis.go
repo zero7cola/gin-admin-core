@@ -17,24 +17,12 @@ type RedisClient struct {
 var once sync.Once
 var Redis *RedisClient
 
-// ConnectRedis 连接 redis 数据库，设置全局的 Redis 对象
-func ConnectRedis(address string, username string, password string, db int) {
-	once.Do(func() {
-		Redis = NewClient(address, username, password, db)
-	})
-}
-
-func NewClient(addr, username, password string, db int) *RedisClient {
+func NewClient(redis *redis.Client) *RedisClient {
 
 	rds := &RedisClient{}
 	rds.Context = context.Background()
 
-	rds.Client = redis.NewClient(&redis.Options{
-		Addr:     addr,
-		Username: username,
-		Password: password,
-		DB:       db,
-	})
+	rds.Client = redis
 
 	if err := rds.Client.Ping(rds.Context).Err(); err != nil {
 		panic(err)
@@ -42,6 +30,32 @@ func NewClient(addr, username, password string, db int) *RedisClient {
 
 	return rds
 }
+
+// ConnectRedis 连接 redis 数据库，设置全局的 Redis 对象
+//func ConnectRedis(address string, username string, password string, db int) {
+//	once.Do(func() {
+//		Redis = NewClient(address, username, password, db)
+//	})
+//}
+//
+//func NewClient(addr, username, password string, db int) *RedisClient {
+//
+//	rds := &RedisClient{}
+//	rds.Context = context.Background()
+//
+//	rds.Client = redis.NewClient(&redis.Options{
+//		Addr:     addr,
+//		Username: username,
+//		Password: password,
+//		DB:       db,
+//	})
+//
+//	if err := rds.Client.Ping(rds.Context).Err(); err != nil {
+//		panic(err)
+//	}
+//
+//	return rds
+//}
 
 func (rds *RedisClient) Ping() error {
 

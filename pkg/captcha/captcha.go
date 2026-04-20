@@ -4,11 +4,10 @@ package captcha
 import (
 	"sync"
 
-	"github.com/zero7cola/gin-admin-core/config"
-	"github.com/zero7cola/gin-admin-core/pkg/helpers"
-	"github.com/zero7cola/gin-admin-core/pkg/redis"
-
 	"github.com/mojocn/base64Captcha"
+	"github.com/zero7cola/gin-admin-core/config"
+	"github.com/zero7cola/gin-admin-core/core"
+	"github.com/zero7cola/gin-admin-core/pkg/helpers"
 )
 
 type Captcha struct {
@@ -29,17 +28,17 @@ func NewCaptcha() *Captcha {
 
 		// 使用全局 Redis 对象，并配置存储 Key 的前缀
 		store := RedisStore{
-			RedisClient: redis.Redis,
-			KeyPrefix:   config.GetString("app.name") + ":captcha:",
+			RedisClient: core.Global.Redis,
+			KeyPrefix:   core.Global.Config.App.Name + ":captcha:",
 		}
 
 		// 配置 base64Captcha 驱动信息
 		driver := base64Captcha.NewDriverDigit(
-			config.GetInt("captcha.height"),      // 宽
-			config.GetInt("captcha.width"),       // 高
-			config.GetInt("captcha.length"),      // 长度
-			config.GetFloat64("captcha.maxskew"), // 数字的最大倾斜角度
-			config.GetInt("captcha.dotcount"),    // 图片背景里的混淆点数量
+			core.Global.Config.Captcha.Height,
+			core.Global.Config.Captcha.Width,
+			core.Global.Config.Captcha.Length,
+			core.Global.Config.Captcha.Maxskew,
+			core.Global.Config.Captcha.Dotcount,
 		)
 
 		// 实例化 base64Captcha 并赋值给内部使用的 internalCaptcha 对象
