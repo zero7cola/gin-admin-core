@@ -14,6 +14,8 @@ func LoadConfig(path string) (*InitConfig, error) {
 	v := viper.New()
 
 	if len(path) > 0 {
+		v.SetConfigType("yaml") // 类型
+		v.AddConfigPath(".")    // 当前目录
 		v.SetConfigFile(path)
 
 		if err := v.ReadInConfig(); err != nil {
