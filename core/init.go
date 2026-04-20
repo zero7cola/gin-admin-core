@@ -1,6 +1,7 @@
 package core
 
 import (
+	"fmt"
 	"github.com/redis/go-redis/v9"
 	"github.com/spf13/viper"
 	redisClient "github.com/zero7cola/gin-admin-core/pkg/redis"
@@ -8,11 +9,19 @@ import (
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 	"log"
+	"os"
+	"path/filepath"
 )
 
 func LoadConfig(path string) (*InitConfig, error) {
 	v := viper.New()
+	wd, _ := os.Getwd()
+	fmt.Println("当前工作目录:", wd)
 
+	fmt.Println("传入路径:", path)
+
+	abs, _ := filepath.Abs(path)
+	fmt.Println("绝对路径:", abs)
 	if len(path) > 0 {
 		v.SetConfigType("yaml") // 类型
 		v.AddConfigPath(".")    // 当前目录
@@ -21,7 +30,6 @@ func LoadConfig(path string) (*InitConfig, error) {
 		if err := v.ReadInConfig(); err != nil {
 			return nil, err
 		}
-		viper.WatchConfig()
 		if err := viper.ReadInConfig(); err != nil {
 			log.Fatalf("Error reading setting file, %s", err)
 		}
