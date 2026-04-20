@@ -11,7 +11,7 @@ import (
 
 func LoadConfig(path string) (*InitConfig, error) {
 	v := viper.New()
-	
+
 	if len(path) > 0 {
 		v.SetConfigType("yaml") // 类型
 		v.AddConfigPath(".")    // 当前目录
@@ -106,13 +106,13 @@ func Init(c *InitConfig) {
 		panic("setting is nil")
 	}
 
-	if c.Logger == nil {
-		panic("logger is required")
-	}
-
-	if c.DB == nil {
-		panic("db is required")
-	}
+	//if c.Logger == nil {
+	// panic("logger is required")
+	//}
+	//
+	//if c.DB == nil {
+	//	panic("db is required")
+	//}
 
 	Global = &appContext{
 		DB:     c.DB,
@@ -122,7 +122,7 @@ func Init(c *InitConfig) {
 	setting.GlobalSetting = c.Config
 
 	if c.Redis == nil {
-		panic("redis is required")
+		// panic("redis is required")
 	} else {
 		Global.Redis = redisClient.NewClient(c.Redis)
 	}
