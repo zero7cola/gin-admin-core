@@ -28,10 +28,17 @@ func Register(r *gin.Engine, prefix string, modules ...core.Module) {
 
 	root := r.Group(prefix)
 
+	// 注册中间件
+	root.Use(middlewares.LimitIP("500-H"))
+	root.Use(middlewares.AuthAdminJWT())
+
 	// 1️⃣ 内置模块
 	//for _, m := range builtinModules {
 	//	registerModule(root, m)
 	//}
+
+	// 注册静态资源路由
+	routes.RegisterStaticRoutes(r)
 
 	routes.RegisterAdminRoutes(root)
 
@@ -39,12 +46,6 @@ func Register(r *gin.Engine, prefix string, modules ...core.Module) {
 	for _, m := range modules {
 		registerModule(root, m)
 	}
-
-	// 注册静态资源路由
-	routes.RegisterStaticRoutes(r)
-
-	root.Use(middlewares.LimitIP("500-H"))
-	root.Use(middlewares.AuthAdminJWT())
 }
 
 func registerGlobalMiddleWare(router *gin.Engine) {
