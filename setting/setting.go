@@ -1,11 +1,11 @@
 package setting
 
 type Setting struct {
-	App     AppConfig
-	Storage StorageConfig
-	JWT     JWTConfig
-	Captcha CaptchaConfig
-	Paging  PagingConfig
+	App     AppConfig     `mapstructure:"app" yaml:"app"`
+	Storage StorageConfig `mapstructure:"storage" yaml:"storage"`
+	JWT     JWTConfig     `mapstructure:"jwt" yaml:"jwt"`
+	Captcha CaptchaConfig `mapstructure:"captcha" yaml:"captcha"`
+	Paging  PagingConfig  `mapstructure:"paging" yaml:"paging"`
 }
 
 var GlobalSetting *Setting
