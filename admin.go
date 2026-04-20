@@ -29,7 +29,7 @@ func Register(r *gin.Engine, prefix string, modules ...core.Module) {
 	root := r.Group(prefix)
 
 	// 注册中间件
-	root.Use(middlewares.LimitIP("500-H"))
+	//root.Use(middlewares.LimitIP("500-H"))
 	root.Use(middlewares.AuthAdminJWT())
 
 	// 1️⃣ 内置模块
