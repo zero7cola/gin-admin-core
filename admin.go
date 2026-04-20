@@ -18,6 +18,10 @@ func RegisterBuiltin(mods ...core.Module) {
 }
 
 func Register(r *gin.Engine, prefix string, modules ...core.Module) {
+
+	// 注册全局中间件
+	registerGlobalMiddleWare(r)
+
 	if prefix == "" {
 		prefix = "/admin"
 	}
@@ -36,8 +40,6 @@ func Register(r *gin.Engine, prefix string, modules ...core.Module) {
 		registerModule(root, m)
 	}
 
-	// 注册全局中间件
-	registerGlobalMiddleWare(r)
 	// 注册静态资源路由
 	routes.RegisterStaticRoutes(r)
 
