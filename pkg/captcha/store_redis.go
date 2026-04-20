@@ -2,10 +2,11 @@ package captcha
 
 import (
 	"errors"
-	"github.com/zero7cola/gin-admin-core/app"
-	"github.com/zero7cola/gin-admin-core/config"
-	"github.com/zero7cola/gin-admin-core/pkg/redis"
 	"time"
+
+	"github.com/zero7cola/gin-admin-core/config"
+	"github.com/zero7cola/gin-admin-core/pkg/helpers"
+	"github.com/zero7cola/gin-admin-core/pkg/redis"
 )
 
 // RedisStore 实现 base64Captcha.Store interface
@@ -19,7 +20,7 @@ func (s *RedisStore) Set(key string, value string) error {
 
 	ExpireTime := time.Minute * time.Duration(config.GetInt64("captcha.expire_time"))
 	// 方便本地开发调试
-	if app.IsDebug() {
+	if helpers.IsDebug() {
 		ExpireTime = time.Minute * time.Duration(config.GetInt64("captcha.debug_expire_time"))
 	}
 

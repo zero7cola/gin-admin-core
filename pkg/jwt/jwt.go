@@ -3,13 +3,14 @@ package jwt
 import (
 	"errors"
 	"fmt"
-	"github.com/gin-gonic/gin"
-	jwtpkg "github.com/golang-jwt/jwt/v5"
-	"github.com/zero7cola/gin-admin-core/app"
-	"github.com/zero7cola/gin-admin-core/config"
-	"github.com/zero7cola/gin-admin-core/pkg/logger"
 	"strings"
 	"time"
+
+	"github.com/gin-gonic/gin"
+	jwtpkg "github.com/golang-jwt/jwt/v5"
+	"github.com/zero7cola/gin-admin-core/config"
+	"github.com/zero7cola/gin-admin-core/pkg/helpers"
+	"github.com/zero7cola/gin-admin-core/pkg/logger"
 )
 
 var (
@@ -75,10 +76,10 @@ func (jwt *JWT) IssueToken(userID string, userName string) string {
 		jwt.expireAtTime().Unix(),
 		USER_TOKEN_TYPE,
 		jwtpkg.RegisteredClaims{
-			ExpiresAt: jwtpkg.NewNumericDate(jwt.expireAtTime()),      // 过期时间
-			IssuedAt:  jwtpkg.NewNumericDate(app.TimenowInTimezone()), // 签发时间
-			NotBefore: jwtpkg.NewNumericDate(app.TimenowInTimezone()), // 生效时间
-			Issuer:    config.GetString("app.name"),                   // 签发者
+			ExpiresAt: jwtpkg.NewNumericDate(jwt.expireAtTime()),          // 过期时间
+			IssuedAt:  jwtpkg.NewNumericDate(helpers.TimenowInTimezone()), // 签发时间
+			NotBefore: jwtpkg.NewNumericDate(helpers.TimenowInTimezone()), // 生效时间
+			Issuer:    config.GetString("app.name"),                       // 签发者
 		},
 	})
 	if err != nil {
@@ -101,10 +102,10 @@ func (jwt *JWT) IssueAdminToken(userID string, userName string) string {
 		jwt.expireAtTime().Unix(),
 		ADMIN_TOKEN_TYPE,
 		jwtpkg.RegisteredClaims{
-			ExpiresAt: jwtpkg.NewNumericDate(jwt.expireAtTime()),      // 过期时间
-			IssuedAt:  jwtpkg.NewNumericDate(app.TimenowInTimezone()), // 签发时间
-			NotBefore: jwtpkg.NewNumericDate(app.TimenowInTimezone()), // 生效时间
-			Issuer:    config.GetString("app.name"),                   // 签发者
+			ExpiresAt: jwtpkg.NewNumericDate(jwt.expireAtTime()),          // 过期时间
+			IssuedAt:  jwtpkg.NewNumericDate(helpers.TimenowInTimezone()), // 签发时间
+			NotBefore: jwtpkg.NewNumericDate(helpers.TimenowInTimezone()), // 生效时间
+			Issuer:    config.GetString("app.name"),                       // 签发者
 		},
 	})
 	if err != nil {
@@ -117,7 +118,7 @@ func (jwt *JWT) IssueAdminToken(userID string, userName string) string {
 
 // expireAtTime 过期时间
 func (jwt *JWT) expireAtTime() time.Time {
-	timenow := app.TimenowInTimezone()
+	timenow := helpers.TimenowInTimezone()
 
 	var expireTime int64
 	if config.GetBool("app.debug") {

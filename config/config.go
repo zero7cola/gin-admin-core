@@ -3,8 +3,6 @@ package config
 import (
 	"log"
 
-	"github.com/zero7cola/gin-admin-core/pkg/helpers"
-
 	"github.com/spf13/cast"
 	"github.com/spf13/viper"
 )
@@ -69,7 +67,7 @@ func GetFloat64(path string, defaultValue ...interface{}) float64 {
 
 func internalGet(path string, defaultValue ...interface{}) interface{} {
 	// config 或者环境变量不存在的情况
-	if !viper.IsSet(path) || helpers.Empty(viper.Get(path)) {
+	if !viper.IsSet(path) || viper.Get(path) == "" {
 		if len(defaultValue) > 0 {
 			return defaultValue[0]
 		}

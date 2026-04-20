@@ -4,7 +4,8 @@ package logger
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/zero7cola/gin-admin-core/app"
+	"github.com/zero7cola/gin-admin-core/pkg/helpers"
+
 	"os"
 	"strings"
 	"time"
@@ -64,7 +65,7 @@ func getEncoder() zapcore.Encoder {
 	}
 
 	// 本地环境配置
-	if app.IsDebug() {
+	if helpers.IsDebug() {
 		// 终端输出的关键词高亮
 		encoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
 		// 本地设置内置的 Console 解码器（支持 stacktrace 换行）
@@ -98,7 +99,7 @@ func getLogWriter(filename string, maxSize, maxBackup, maxAge int, compress bool
 		Compress:   compress,
 	}
 	// 配置输出介质
-	if app.IsDebug() {
+	if helpers.IsDebug() {
 		// 本地开发终端打印和记录文件
 		return zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout), zapcore.AddSync(lumberJackLogger))
 	} else {

@@ -4,8 +4,8 @@ package captcha
 import (
 	"sync"
 
-	"github.com/zero7cola/gin-admin-core/app"
 	"github.com/zero7cola/gin-admin-core/config"
+	"github.com/zero7cola/gin-admin-core/pkg/helpers"
 	"github.com/zero7cola/gin-admin-core/pkg/redis"
 
 	"github.com/mojocn/base64Captcha"
@@ -58,7 +58,7 @@ func (c *Captcha) GenerateCaptcha() (id string, b64s, answer string, err error) 
 func (c *Captcha) VerifyCaptcha(id string, answer string) (match bool) {
 
 	// 方便本地和 API 自动测试
-	if !app.IsProduction() && id == config.GetString("captcha.testing_key") {
+	if !helpers.IsProduction() && id == config.GetString("captcha.testing_key") {
 		return true
 	}
 	// 第三个参数是验证后是否删除，我们选择 false
