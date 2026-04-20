@@ -3,8 +3,8 @@ package middlewares
 
 import (
 	"bytes"
+	"github.com/zero7cola/gin-admin-core/core"
 	"github.com/zero7cola/gin-admin-core/pkg/helpers"
-	"github.com/zero7cola/gin-admin-core/pkg/logger"
 	"io"
 	"time"
 
@@ -67,12 +67,12 @@ func Logger() gin.HandlerFunc {
 
 		if responStatus > 400 && responStatus <= 499 {
 			// 除了 StatusBadRequest 以外，warning 提示一下，常见的有 403 404，开发时都要注意
-			logger.Warn("HTTP Warning "+cast.ToString(responStatus), logFields...)
+			core.Global.Logger.Warn("HTTP Warning "+cast.ToString(responStatus), logFields...)
 		} else if responStatus >= 500 && responStatus <= 599 {
 			// 除了内部错误，记录 error
-			logger.Error("HTTP Error "+cast.ToString(responStatus), logFields...)
+			core.Global.Logger.Error("HTTP Error "+cast.ToString(responStatus), logFields...)
 		} else {
-			logger.Debug("HTTP Access Log", logFields...)
+			core.Global.Logger.Debug("HTTP Access Log", logFields...)
 		}
 	}
 }

@@ -15,8 +15,6 @@ type AdminIndexController struct {
 
 func (ic *AdminIndexController) Index(c *gin.Context) {
 
-	fmt.Printf("%v \n", setting.GlobalSetting)
-
 	core.Global.Logger.Info("AdminIndexController Index")
 
 	c.JSON(http.StatusOK, gin.H{
@@ -26,6 +24,7 @@ func (ic *AdminIndexController) Index(c *gin.Context) {
 }
 
 func (ic *AdminIndexController) Version(c *gin.Context) {
+	fmt.Printf("%v \n", setting.GlobalSetting)
 	c.JSON(http.StatusOK, gin.H{
 		"code": 200,
 		"data": setting.GlobalSetting.App.Version,
