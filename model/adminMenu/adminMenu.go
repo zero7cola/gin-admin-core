@@ -2,20 +2,20 @@ package adminMenu
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/zero7cola/gin-admin-core/modules/base"
+	"github.com/zero7cola/gin-admin-core/model"
 	"github.com/zero7cola/gin-admin-core/pkg/database"
 	"github.com/zero7cola/gin-admin-core/pkg/helpers"
 	"github.com/zero7cola/gin-admin-core/pkg/paginator"
 )
 
 type AdminMenu struct {
-	base.BaseModel
+	model.BaseModel
 	ParentId uint64 `json:"parent_id" gorm:"parent_id"`
 	Order    uint64 `json:"order" gorm:"order"`
 	Name     string `json:"name" gorm:"name"`
 	Icon     string `json:"icon" gorm:"icon"`
 	Uri      string `json:"uri" gorm:"uri"`
-	base.CommonTimestampsField
+	model.CommonTimestampsField
 }
 
 // Create 创建用户，通过 User.ID 来判断是否创建成功

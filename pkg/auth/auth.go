@@ -4,7 +4,7 @@ package auth
 import (
 	"errors"
 
-	"github.com/zero7cola/gin-admin-core/modules/adminUser"
+	"github.com/zero7cola/gin-admin-core/model/adminUser"
 	"github.com/zero7cola/gin-admin-core/pkg/logger"
 
 	"github.com/spf13/cast"

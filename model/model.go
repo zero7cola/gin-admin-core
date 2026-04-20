@@ -1,5 +1,5 @@
 // Package model 模型通用属性和方法
-package base
+package model
 
 import (
 	"time"

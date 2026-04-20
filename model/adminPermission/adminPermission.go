@@ -2,21 +2,21 @@ package adminPermission
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/zero7cola/gin-admin-core/modules/base"
+	"github.com/zero7cola/gin-admin-core/model"
 	"github.com/zero7cola/gin-admin-core/pkg/database"
 	"github.com/zero7cola/gin-admin-core/pkg/helpers"
 	"github.com/zero7cola/gin-admin-core/pkg/paginator"
 )
 
 type AdminPermission struct {
-	base.BaseModel
+	model.BaseModel
 	Name       string `json:"name" gorm:"name"`
 	Slug       string `json:"slug" gorm:"slug"`
 	HttpMethod string `json:"http_method" gorm:"http_method"`
 	HttpPath   string `json:"http_path" gorm:"http_path"`
 	Order      uint64 `json:"order" gorm:"order"`
 	ParentId   uint64 `json:"parent_id" gorm:"parent_id"`
-	base.CommonTimestampsField
+	model.CommonTimestampsField
 }
 
 // Create 创建用户，通过 User.ID 来判断是否创建成功

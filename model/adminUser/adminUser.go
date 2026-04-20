@@ -1,20 +1,21 @@
 package adminUser
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/zero7cola/gin-admin-core/modules/adminMenu"
-	"github.com/zero7cola/gin-admin-core/modules/adminPermission"
-	"github.com/zero7cola/gin-admin-core/modules/adminRole"
-	"github.com/zero7cola/gin-admin-core/modules/base"
+	"github.com/zero7cola/gin-admin-core/model"
+	"github.com/zero7cola/gin-admin-core/model/adminMenu"
+	"github.com/zero7cola/gin-admin-core/model/adminPermission"
+	"github.com/zero7cola/gin-admin-core/model/adminRole"
 	"github.com/zero7cola/gin-admin-core/pkg/database"
 	"github.com/zero7cola/gin-admin-core/pkg/hash"
 	"github.com/zero7cola/gin-admin-core/pkg/helpers"
 	"github.com/zero7cola/gin-admin-core/pkg/paginator"
+
+	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
 
 type AdminUser struct {
-	base.BaseModel
+	model.BaseModel
 	Username      string                            `json:"username" gorm:"username"`
 	Password      string                            `json:"-" gorm:"password"`
 	Name          string                            `json:"name" gorm:"name"`
@@ -23,7 +24,7 @@ type AdminUser struct {
 	Roles         []adminRole.AdminRole             `json:"roles" gorm:"many2many:admin_role_users;foreignKey:ID;joinForeignKey:UserID;references:ID;joinReferences:RoleID"`
 	Permissions   []adminPermission.AdminPermission `json:"permissions" gorm:"-"`
 	Menus         []adminMenu.AdminMenu             `json:"menus" gorm:"-"`
-	base.CommonTimestampsField
+	model.CommonTimestampsField
 }
 
 func (model *AdminUser) TableName() string {
