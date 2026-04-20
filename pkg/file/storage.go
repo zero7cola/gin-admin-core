@@ -3,7 +3,7 @@ package file
 import (
 	"context"
 	"fmt"
-	"github.com/zero7cola/gin-admin-core/config"
+	"github.com/zero7cola/gin-admin-core/setting"
 	"io"
 	"mime/multipart"
 	"path/filepath"
@@ -84,7 +84,7 @@ func safeJoin(base, p string) (string, error) {
 func GetFileStoragePath() string {
 	formatted := time.Now().Format("20060102")
 
-	return config.GetString("app.name") + "/" + formatted
+	return setting.GlobalSetting.App.Name + "/" + formatted
 }
 
 // 获取文件存储名称(包含完整路径)

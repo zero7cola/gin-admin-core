@@ -4,9 +4,8 @@ import (
 	"errors"
 	"time"
 
-	"github.com/zero7cola/gin-admin-core/config"
-	"github.com/zero7cola/gin-admin-core/pkg/helpers"
 	"github.com/zero7cola/gin-admin-core/pkg/redis"
+	"github.com/zero7cola/gin-admin-core/setting"
 )
 
 // RedisStore 实现 base64Captcha.Store interface
@@ -18,11 +17,7 @@ type RedisStore struct {
 // Set 实现 base64Captcha.Store interface 的 Set 方法
 func (s *RedisStore) Set(key string, value string) error {
 
-	ExpireTime := time.Minute * time.Duration(config.GetInt64("captcha.expire_time"))
-	// 方便本地开发调试
-	if helpers.IsDebug() {
-		ExpireTime = time.Minute * time.Duration(config.GetInt64("captcha.debug_expire_time"))
-	}
+	ExpireTime := time.Minute * time.Duration(setting.GlobalSetting.Captcha.ExpireTime)
 
 	if ok := s.RedisClient.Set(s.KeyPrefix+key, value, ExpireTime); !ok {
 		return errors.New("无法存储图片验证码答案")

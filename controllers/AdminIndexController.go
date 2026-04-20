@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"fmt"
+	"github.com/zero7cola/gin-admin-core/setting"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -14,7 +15,7 @@ type AdminIndexController struct {
 
 func (ic *AdminIndexController) Index(c *gin.Context) {
 
-	fmt.Printf("%v \n", core.Global.Config)
+	fmt.Printf("%v \n", setting.GlobalSetting)
 
 	core.Global.Logger.Info("AdminIndexController Index")
 
@@ -27,6 +28,6 @@ func (ic *AdminIndexController) Index(c *gin.Context) {
 func (ic *AdminIndexController) Version(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"code": 200,
-		"data": core.Global.Config.App.Version,
+		"data": setting.GlobalSetting.App.Version,
 	})
 }

@@ -3,10 +3,10 @@ package controllers
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/zero7cola/gin-admin-core/internal"
 	"github.com/zero7cola/gin-admin-core/model/adminUser"
 	"github.com/zero7cola/gin-admin-core/pkg/auth"
 	"github.com/zero7cola/gin-admin-core/pkg/captcha"
-	"github.com/zero7cola/gin-admin-core/pkg/helpers"
 	"github.com/zero7cola/gin-admin-core/pkg/jwt"
 	"github.com/zero7cola/gin-admin-core/pkg/logger"
 	"github.com/zero7cola/gin-admin-core/pkg/response"
@@ -81,7 +81,7 @@ func (ac *AdminAuthController) ShowCaptcha(c *gin.Context) {
 	// 生成验证码
 	id, b64s, answer, err := captcha.NewCaptcha().GenerateCaptcha()
 
-	if helpers.IsDebug() {
+	if internal.IsDebug() {
 		fmt.Printf("获取验证码 id:%s answer:%s\n", id, answer)
 	}
 

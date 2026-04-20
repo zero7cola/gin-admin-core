@@ -2,7 +2,7 @@
 package routes
 
 import (
-	"github.com/zero7cola/gin-admin-core/config"
+	"github.com/zero7cola/gin-admin-core/setting"
 
 	"github.com/gin-gonic/gin"
 )
@@ -12,8 +12,8 @@ func RegisterStaticRoutes(r *gin.Engine) {
 
 	staticPath := "static"
 
-	if config.GetString("storage.local.static") != "" {
-		staticPath = config.GetString("storage.local.static")
+	if setting.GlobalSetting.Storage.Local.StaticPrefix != "" {
+		staticPath = setting.GlobalSetting.Storage.Local.StaticPrefix
 	}
 
 	// 本地文件

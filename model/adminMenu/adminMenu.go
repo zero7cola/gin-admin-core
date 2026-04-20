@@ -2,9 +2,9 @@ package adminMenu
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/zero7cola/gin-admin-core/internal"
 	"github.com/zero7cola/gin-admin-core/model"
 	"github.com/zero7cola/gin-admin-core/pkg/database"
-	"github.com/zero7cola/gin-admin-core/pkg/helpers"
 	"github.com/zero7cola/gin-admin-core/pkg/paginator"
 )
 
@@ -49,7 +49,7 @@ func Paginate(c *gin.Context, perPage int) (users []AdminMenu, paging paginator.
 		c,
 		database.DB.Model(AdminMenu{}),
 		&users,
-		helpers.VADMINURL(database.TableName(&AdminMenu{})),
+		internal.VADMINURL(database.TableName(&AdminMenu{})),
 		perPage,
 	)
 	return

@@ -2,11 +2,11 @@ package adminRole
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/zero7cola/gin-admin-core/internal"
 	"github.com/zero7cola/gin-admin-core/model"
 	"github.com/zero7cola/gin-admin-core/model/adminMenu"
 	"github.com/zero7cola/gin-admin-core/model/adminPermission"
 	"github.com/zero7cola/gin-admin-core/pkg/database"
-	"github.com/zero7cola/gin-admin-core/pkg/helpers"
 	"github.com/zero7cola/gin-admin-core/pkg/paginator"
 )
 
@@ -50,7 +50,7 @@ func Paginate(c *gin.Context, perPage int) (users []AdminRole, paging paginator.
 		c,
 		database.DB.Model(AdminRole{}),
 		&users,
-		helpers.VADMINURL(database.TableName(&AdminRole{})),
+		internal.VADMINURL(database.TableName(&AdminRole{})),
 		perPage,
 	)
 	return

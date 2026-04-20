@@ -5,9 +5,8 @@ import (
 	"sync"
 
 	"github.com/mojocn/base64Captcha"
-	"github.com/zero7cola/gin-admin-core/config"
 	"github.com/zero7cola/gin-admin-core/core"
-	"github.com/zero7cola/gin-admin-core/pkg/helpers"
+	"github.com/zero7cola/gin-admin-core/setting"
 )
 
 type Captcha struct {
@@ -29,16 +28,16 @@ func NewCaptcha() *Captcha {
 		// 使用全局 Redis 对象，并配置存储 Key 的前缀
 		store := RedisStore{
 			RedisClient: core.Global.Redis,
-			KeyPrefix:   core.Global.Config.App.Name + ":captcha:",
+			KeyPrefix:   setting.GlobalSetting.App.Name + ":captcha:",
 		}
 
 		// 配置 base64Captcha 驱动信息
 		driver := base64Captcha.NewDriverDigit(
-			core.Global.Config.Captcha.Height,
-			core.Global.Config.Captcha.Width,
-			core.Global.Config.Captcha.Length,
-			core.Global.Config.Captcha.Maxskew,
-			core.Global.Config.Captcha.Dotcount,
+			setting.GlobalSetting.Captcha.Height,
+			setting.GlobalSetting.Captcha.Width,
+			setting.GlobalSetting.Captcha.Length,
+			setting.GlobalSetting.Captcha.Maxskew,
+			setting.GlobalSetting.Captcha.Dotcount,
 		)
 
 		// 实例化 base64Captcha 并赋值给内部使用的 internalCaptcha 对象
@@ -55,11 +54,6 @@ func (c *Captcha) GenerateCaptcha() (id string, b64s, answer string, err error) 
 
 // VerifyCaptcha 验证验证码是否正确
 func (c *Captcha) VerifyCaptcha(id string, answer string) (match bool) {
-
-	// 方便本地和 API 自动测试
-	if !helpers.IsProduction() && id == config.GetString("captcha.testing_key") {
-		return true
-	}
 	// 第三个参数是验证后是否删除，我们选择 false
 	// 这样方便用户多次提交，防止表单提交错误需要多次输入图片验证码
 	return c.Base64Captcha.Verify(id, answer, false)

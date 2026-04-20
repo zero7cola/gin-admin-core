@@ -5,7 +5,6 @@ import (
 	"github.com/ArtisanCloud/PowerWeChat/v3/src/officialAccount"
 	"github.com/ArtisanCloud/PowerWeChat/v3/src/officialAccount/templateMessage/request"
 	"github.com/gin-gonic/gin"
-	"github.com/zero7cola/gin-admin-core/config"
 	"net/http"
 )
 
@@ -26,20 +25,20 @@ func GetCallbackIP(ctx *gin.Context) {
 
 func GetApp() {
 	var w_err error
-	OfficialAccountApp, w_err = officialAccount.NewOfficialAccount(&officialAccount.UserConfig{
-		AppID:  config.GetString("offiaccount.appid"),     // 公众号、小程序的appid
-		Secret: config.GetString("offiaccount.appsecret"), //
-		Token:  config.GetString("offiaccount.token"),
-
-		Log: officialAccount.Log{
-			Level:  "debug",
-			File:   "./wechat.log",
-			Stdout: false, //  是否打印在终端
-		},
-
-		HttpDebug: true,
-		Debug:     false,
-	})
+	//OfficialAccountApp, w_err = officialAccount.NewOfficialAccount(&officialAccount.UserConfig{
+	//	AppID:  setting.GetString("offiaccount.appid"),     // 公众号、小程序的appid
+	//	Secret: setting.GetString("offiaccount.appsecret"), //
+	//	Token:  setting.GetString("offiaccount.token"),
+	//
+	//	Log: officialAccount.Log{
+	//		Level:  "debug",
+	//		File:   "./wechat.log",
+	//		Stdout: false, //  是否打印在终端
+	//	},
+	//
+	//	HttpDebug: true,
+	//	Debug:     false,
+	//})
 
 	if w_err != nil {
 		panic(w_err)
@@ -48,8 +47,8 @@ func GetApp() {
 
 func SendWechatTemplateMessage(ctx *gin.Context, toUser string) {
 	//OfficialAccountApp, err := officialAccount.NewOfficialAccount(&officialAccount.UserConfig{
-	//	AppID:  config.GetString("wechat.offiaccount.appid"),     // 公众号、小程序的appid
-	//	Secret: config.GetString("wechat.offiaccount.appsecret"), //
+	//	AppID:  setting.GetString("wechat.offiaccount.appid"),     // 公众号、小程序的appid
+	//	Secret: setting.GetString("wechat.offiaccount.appsecret"), //
 	//
 	//	Log: officialAccount.Log{
 	//		Level:  "debug",

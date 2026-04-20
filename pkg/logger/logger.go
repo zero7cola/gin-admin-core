@@ -4,8 +4,7 @@ package logger
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/zero7cola/gin-admin-core/pkg/helpers"
-
+	"github.com/zero7cola/gin-admin-core/internal"
 	"os"
 	"strings"
 	"time"
@@ -24,10 +23,10 @@ func InitLogger(filename string, maxSize, maxBackup, maxAge int, compress bool, 
 	// 获取日志写入介质
 	writeSyncer := getLogWriter(filename, maxSize, maxBackup, maxAge, compress, logType)
 
-	// 设置日志等级，具体请见 config/log.go 文件
+	// 设置日志等级，具体请见 setting/log.go 文件
 	logLevel := new(zapcore.Level)
 	if err := logLevel.UnmarshalText([]byte(level)); err != nil {
-		fmt.Println("日志初始化错误，日志级别设置有误。请修改 config/log.go 文件中的 log.level 配置项")
+		fmt.Println("日志初始化错误，日志级别设置有误。请修改 setting/log.go 文件中的 log.level 配置项")
 	}
 
 	// 初始化 core
@@ -65,7 +64,7 @@ func getEncoder() zapcore.Encoder {
 	}
 
 	// 本地环境配置
-	if helpers.IsDebug() {
+	if internal.IsDebug() {
 		// 终端输出的关键词高亮
 		encoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
 		// 本地设置内置的 Console 解码器（支持 stacktrace 换行）
@@ -90,7 +89,7 @@ func getLogWriter(filename string, maxSize, maxBackup, maxAge int, compress bool
 		filename = strings.ReplaceAll(filename, "logs.log", logname)
 	}
 
-	// 滚动日志，详见 config/log.go
+	// 滚动日志，详见 setting/log.go
 	lumberJackLogger := &lumberjack.Logger{
 		Filename:   filename,
 		MaxSize:    maxSize,
@@ -99,7 +98,7 @@ func getLogWriter(filename string, maxSize, maxBackup, maxAge int, compress bool
 		Compress:   compress,
 	}
 	// 配置输出介质
-	if helpers.IsDebug() {
+	if internal.IsDebug() {
 		// 本地开发终端打印和记录文件
 		return zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout), zapcore.AddSync(lumberJackLogger))
 	} else {

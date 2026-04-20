@@ -1,8 +1,6 @@
 package cache
 
 import (
-	"fmt"
-	"github.com/zero7cola/gin-admin-core/config"
 	redis2 "github.com/zero7cola/gin-admin-core/pkg/redis"
 	"time"
 )
@@ -12,12 +10,12 @@ type RedisStore struct {
 	KeyPrefix   string
 }
 
-func NewRedisStore(addr, username, password string, db int) *RedisStore {
-	return &RedisStore{
-		RedisClient: redis2.NewClient(addr, username, password, db),
-		KeyPrefix:   fmt.Sprintf("%s:cache:", config.GetString("app_name")),
-	}
-}
+//func NewRedisStore(addr, username, password string, db int) *RedisStore {
+//	return &RedisStore{
+//		RedisClient: redis2.NewClient(addr, username, password, db),
+//		KeyPrefix:   fmt.Sprintf("%s:cache:", setting.GetString("app_name")),
+//	}
+//}
 
 func (s *RedisStore) Set(key string, value string, timeout time.Duration) {
 	s.RedisClient.Set(s.KeyPrefix+key, value, timeout)

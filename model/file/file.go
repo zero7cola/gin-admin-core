@@ -1,14 +1,15 @@
 package file
 
 import (
+	"github.com/zero7cola/gin-admin-core/internal"
 	"strings"
 	"time"
 
-	"github.com/zero7cola/gin-admin-core/config"
 	"github.com/zero7cola/gin-admin-core/model"
 	"github.com/zero7cola/gin-admin-core/pkg/database"
 	"github.com/zero7cola/gin-admin-core/pkg/helpers"
 	"github.com/zero7cola/gin-admin-core/pkg/paginator"
+	"github.com/zero7cola/gin-admin-core/setting"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -45,11 +46,14 @@ func (model *File) AfterFind(tx *gorm.DB) (err error) {
 func (model *File) GetFileFullUrl() string {
 	url := model.Url
 	if helpers.Empty(url) {
-		url = config.GetString("storage." + model.Storage + ".domain")
-		if model.Storage == "local" {
-			path := strings.ReplaceAll(model.Path, config.GetString("storage.local.path"), config.GetString("storage.local.static"))
+		storageDrive := model.Storage
+		url = ""
+		if storageDrive == "local" {
+			path := strings.ReplaceAll(model.Path, setting.GlobalSetting.Storage.Local.Path, setting.GlobalSetting.Storage.Local.StaticPrefix)
+			url = setting.GlobalSetting.Storage.Local.Domain
 			url = url + "/" + path
 		} else {
+			url = setting.GlobalSetting.Storage.Oss.Domain
 			url = url + "/" + model.Path
 		}
 	}
@@ -59,7 +63,7 @@ func (model *File) GetFileFullUrl() string {
 func (model *File) GetFileFullPath() string {
 	path := model.Path
 	if model.Storage == "local" {
-		path = config.GetString("storage.local.path") + "/" + path
+		path = setting.GlobalSetting.Storage.Local.Path + "/" + path
 	} else {
 		path = model.Path
 	}
@@ -102,7 +106,7 @@ func Paginate(c *gin.Context, perPage int) (users []File, paging paginator.Pagin
 		c,
 		db,
 		&users,
-		helpers.VADMINURL(database.TableName(&File{})),
+		internal.VADMINURL(database.TableName(&File{})),
 		perPage,
 	)
 	return

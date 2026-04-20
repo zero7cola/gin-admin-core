@@ -2,9 +2,9 @@
 package limiter
 
 import (
-	"github.com/zero7cola/gin-admin-core/config"
 	"github.com/zero7cola/gin-admin-core/pkg/logger"
 	"github.com/zero7cola/gin-admin-core/pkg/redis"
+	"github.com/zero7cola/gin-admin-core/setting"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -36,7 +36,7 @@ func CheckRate(c *gin.Context, key string, formatted string) (limiterlib.Context
 	// 初始化存储，使用我们程序里共用的 redis.Redis 对象
 	store, err := sredis.NewStoreWithOptions(redis.Redis.Client, limiterlib.StoreOptions{
 		// 为 limiter 设置前缀，保持 redis 里数据的整洁
-		Prefix: config.GetString("app.name") + ":limiter",
+		Prefix: setting.GlobalSetting.App.Name + ":limiter",
 	})
 	if err != nil {
 		logger.LogIf(err)

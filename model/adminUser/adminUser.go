@@ -2,6 +2,7 @@ package adminUser
 
 import (
 	"github.com/zero7cola/gin-admin-core/core"
+	"github.com/zero7cola/gin-admin-core/internal"
 	"github.com/zero7cola/gin-admin-core/model"
 	"github.com/zero7cola/gin-admin-core/model/adminMenu"
 	"github.com/zero7cola/gin-admin-core/model/adminPermission"
@@ -118,7 +119,7 @@ func Paginate(c *gin.Context, perPage int) (users []AdminUser, paging paginator.
 		c,
 		core.Global.DB.Model(AdminUser{}),
 		&users,
-		core.VADMINURL(database.TableName(&AdminUser{})),
+		internal.VADMINURL(database.TableName(&AdminUser{})),
 		perPage,
 	)
 	return
