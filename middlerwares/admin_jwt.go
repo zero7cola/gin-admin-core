@@ -2,12 +2,13 @@ package middlewares
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/zero7cola/gin-admin-core/config"
 	"github.com/zero7cola/gin-admin-core/model/adminUser"
 	"github.com/zero7cola/gin-admin-core/pkg/helpers"
 	"github.com/zero7cola/gin-admin-core/pkg/jwt"
 	"github.com/zero7cola/gin-admin-core/pkg/response"
-	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,7 +17,7 @@ func AuthAdminJWT() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
 		path := c.FullPath()
-		ignorePaths := []string{"/admin/auth/login", "/admin/auth/logout", "/admin/auth/captcha", "/admin/upload"} // 忽略的路径无需验证
+		ignorePaths := []string{"/admin/auth/login", "/admin/auth/logout", "/admin/auth/captcha", "/admin/upload", "/admin/version"} // 忽略的路径无需验证
 		ignorePermissionPaths := []string{"/admin/auth/logout", "/admin/auth/refresh-token", "/admin/roles/all", "/admin/permissions/all", "/admin/menus/all", "/admin/auth/current"}
 
 		//if !app.IsProduction() {

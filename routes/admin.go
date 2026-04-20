@@ -20,6 +20,11 @@ func RegisterAdminRoutes(root *gin.RouterGroup) {
 	//admin.Use(middlewares.LimitIP("500-H"))
 	//admin.Use(middlewares.AuthAdminJWT())
 	{
+
+		ic := new(controllers.AdminIndexController)
+		admin.GET("/index", ic.Index)
+		admin.GET("/version", ic.Version)
+
 		authGroup := admin.Group("/auth")
 		// 登录
 		lgc := new(controllers.AdminAuthController)
