@@ -8,7 +8,6 @@ import (
 	"github.com/zero7cola/gin-admin-core/internal"
 
 	"github.com/zero7cola/gin-admin-core/model"
-	"github.com/zero7cola/gin-admin-core/pkg/database"
 	"github.com/zero7cola/gin-admin-core/pkg/helpers"
 	"github.com/zero7cola/gin-admin-core/pkg/paginator"
 	"github.com/zero7cola/gin-admin-core/setting"
@@ -108,7 +107,7 @@ func Paginate(c *gin.Context, perPage int) (users []File, paging paginator.Pagin
 		c,
 		db,
 		&users,
-		internal.VADMINURL(database.TableName(&File{})),
+		internal.VADMINURL(internal.TableName(&File{})),
 		perPage,
 	)
 	return

@@ -3,10 +3,10 @@ package service
 import (
 	"context"
 	"errors"
-	"github.com/zero7cola/gin-admin-core/setting"
 	"strings"
 
-	"github.com/zero7cola/gin-admin-core/model/config"
+	"github.com/zero7cola/gin-admin-core/setting"
+
 	fileModel "github.com/zero7cola/gin-admin-core/model/file"
 	"github.com/zero7cola/gin-admin-core/pkg/file"
 	"github.com/zero7cola/gin-admin-core/pkg/helpers"
@@ -55,12 +55,12 @@ func (s *FileService) UploadFile(c *gin.Context) (fileModel.File, error) {
 	defer fileObj.Close()
 
 	// 验证大小
-	if header.Size > cast.ToInt64(config.Get("storage.size_limit")) {
+	if header.Size > cast.ToInt64(setting.GlobalSetting.Storage.SizeLimit) {
 		return fileModel.File{}, errors.New("超过最大文件大小")
 	}
 
 	// 验证后缀
-	extLimit := cast.ToStringSlice(config.Get("storage.ext"))
+	extLimit := cast.ToStringSlice(setting.GlobalSetting.Storage.Ext)
 	if helpers.FindElement(extLimit, strings.ToLower(helpers.GetFileExt(header.Filename))) < 0 {
 		return fileModel.File{}, errors.New("文件格式不允许 只允许[ " + strings.Join(extLimit, " ") + " ]")
 	}
