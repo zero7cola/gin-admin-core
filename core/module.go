@@ -4,6 +4,6 @@ import "github.com/gin-gonic/gin"
 
 type Module interface {
 	Name() string
-	Register(rg *gin.RouterGroup)
+	Register(c *gin.Context, rg *gin.RouterGroup)
 	Prefix() string
 }
