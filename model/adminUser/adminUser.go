@@ -7,6 +7,7 @@ import (
 	"github.com/zero7cola/gin-admin-core/model/adminMenu"
 	"github.com/zero7cola/gin-admin-core/model/adminPermission"
 	"github.com/zero7cola/gin-admin-core/model/adminRole"
+	"github.com/zero7cola/gin-admin-core/pkg/database"
 	"github.com/zero7cola/gin-admin-core/pkg/hash"
 	"github.com/zero7cola/gin-admin-core/pkg/paginator"
 
@@ -116,9 +117,9 @@ func Get(idstr string) (model AdminUser) {
 func Paginate(c *gin.Context, perPage int) (users []AdminUser, paging paginator.Paging) {
 	paging = paginator.Paginate(
 		c,
-		core.Global.DB.Model(AdminUser{}),
+		database.DB.Model(AdminUser{}),
 		&users,
-		internal.VADMINURL(model.TableName(&AdminUser{})),
+		internal.VADMINURL(database.TableName(&AdminUser{})),
 		perPage,
 	)
 	return

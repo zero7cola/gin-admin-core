@@ -4,6 +4,7 @@ package auth
 import (
 	"errors"
 
+	"github.com/zero7cola/gin-admin-core/core"
 	"github.com/zero7cola/gin-admin-core/model/adminUser"
 	"github.com/zero7cola/gin-admin-core/pkg/logger"
 
@@ -32,7 +33,7 @@ func CurrentAdminUser(c *gin.Context) adminUser.AdminUser {
 	userModel = adminUser.Get(cast.ToString(c.MustGet("current_admin_user_id")))
 
 	if userModel.ID <= 0 {
-		logger.LogIf(errors.New("无法获取用户"))
+		core.Global.Logger.Error(errors.New("无法获取用户").Error())
 		//response.Fail(c, "没有找到")
 		return adminUser.AdminUser{}
 	}

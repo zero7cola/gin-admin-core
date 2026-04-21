@@ -3,6 +3,8 @@ package core
 import (
 	"github.com/redis/go-redis/v9"
 	"github.com/spf13/viper"
+	"github.com/zero7cola/gin-admin-core/pkg/database"
+	"github.com/zero7cola/gin-admin-core/pkg/logger"
 	redisClient "github.com/zero7cola/gin-admin-core/pkg/redis"
 	"github.com/zero7cola/gin-admin-core/setting"
 	"go.uber.org/zap"
@@ -119,12 +121,16 @@ func Init(c *InitConfig) {
 		Logger: c.Logger,
 	}
 
+	logger.Logger = c.Logger
+	database.DB = c.DB
 	setting.GlobalSetting = c.Config
 
 	if c.Redis == nil {
 		panic("redis is required")
 	} else {
-		Global.Redis = redisClient.NewClient(c.Redis)
+		rClient := redisClient.NewClient(c.Redis)
+		Global.Redis = rClient
+		redisClient.Redis = rClient
 	}
 
 }
