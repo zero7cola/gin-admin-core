@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 
+	"github.com/zero7cola/gin-admin-core/core"
 	"gorm.io/gorm"
 	gormlogger "gorm.io/gorm/logger"
 )
@@ -52,7 +53,7 @@ func Init(dbConfig gorm.Dialector, _logger gormlogger.Interface) *gorm.DB {
 }
 
 func TableName(obj interface{}) string {
-	stmt := &gorm.Statement{DB: DB}
+	stmt := &gorm.Statement{DB: core.Global.DB}
 	stmt.Parse(obj)
 	return stmt.Schema.Table
 }
