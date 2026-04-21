@@ -23,12 +23,16 @@ func OperationLog() gin.HandlerFunc {
 			c.Request.Body = io.NopCloser(bytes.NewBuffer(requestBody))
 		}
 
+		adminLog := adminOperationLog.AdminOperationLog{}
+		adminLog.UserId = cast.ToUint64(auth.CurrentAdminUID(c))
+
 		// 设置开始时间
 		c.Next()
 
 		if c.Request.Method == "POST" || c.Request.Method == "PUT" || c.Request.Method == "DELETE" {
-			adminLog := adminOperationLog.AdminOperationLog{}
-			adminLog.UserId = cast.ToUint64(auth.CurrentAdminUID(c))
+			if adminLog.UserId == 0 {
+				adminLog.UserId = cast.ToUint64(auth.CurrentAdminUID(c))
+			}
 			adminLog.Path = c.Request.URL.Path
 			adminLog.Method = c.Request.Method
 			adminLog.Input = string(requestBody)
