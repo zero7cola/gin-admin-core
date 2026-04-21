@@ -3,6 +3,7 @@ package core
 import (
 	"github.com/redis/go-redis/v9"
 	"github.com/spf13/viper"
+	"github.com/zero7cola/gin-admin-core/pkg/cache"
 	"github.com/zero7cola/gin-admin-core/pkg/database"
 	"github.com/zero7cola/gin-admin-core/pkg/logger"
 	redisClient "github.com/zero7cola/gin-admin-core/pkg/redis"
@@ -16,11 +17,12 @@ type InitConfig struct {
 	Redis  *redis.Client
 	Logger *zap.Logger
 	Config *setting.Setting
+	Cache  *cache.CacheService
 }
 
 type Option func(config *InitConfig)
 
-func LoadConfig(path string) (*InitConfig, error) {
+func loadConfig(path string) (*InitConfig, error) {
 	v := viper.New()
 
 	if len(path) > 0 {
@@ -89,9 +91,15 @@ func WithRedis(redis *redis.Client) Option {
 	}
 }
 
+func WithCache(cache *cache.CacheService) Option {
+	return func(c *InitConfig) {
+		c.Cache = cache
+	}
+}
+
 func InitWithFile(path string, opts ...Option) error {
 	// 1️⃣ 先加载文件
-	cfg, err := LoadConfig(path)
+	cfg, err := loadConfig(path)
 	if err != nil {
 		return err
 	}
@@ -144,6 +152,10 @@ func internalInit(c *InitConfig) {
 	} else {
 		rClient := redisClient.NewClient(c.Redis)
 		redisClient.Redis = rClient
+	}
+
+	if c.Cache != nil {
+		cache.Cache = c.Cache
 	}
 
 }
