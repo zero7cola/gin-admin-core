@@ -4,8 +4,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/zero7cola/gin-admin-core/core"
 	"github.com/zero7cola/gin-admin-core/internal"
+	"github.com/zero7cola/gin-admin-core/pkg/database"
 
 	"github.com/zero7cola/gin-admin-core/model"
 	"github.com/zero7cola/gin-admin-core/pkg/helpers"
@@ -73,32 +73,32 @@ func (model *File) GetFileFullPath() string {
 
 // Create 创建用户，通过 User.ID 来判断是否创建成功
 func (model *File) Create() {
-	core.Global.DB.Create(&model)
+	database.DB.Create(&model)
 }
 
 func (model *File) Save() (rowsAffected int64) {
-	result := core.Global.DB.Save(&model)
+	result := database.DB.Save(&model)
 	return result.RowsAffected
 }
 
 func (model *File) Delete() (rowsAffected int64) {
-	result := core.Global.DB.Delete(&model)
+	result := database.DB.Delete(&model)
 	return result.RowsAffected
 }
 
 func All() (models []File) {
-	core.Global.DB.Find(&models)
+	database.DB.Find(&models)
 	return
 }
 
 func Get(idstr string) (model File) {
-	core.Global.DB.Where("id", idstr).First(&model)
+	database.DB.Where("id", idstr).First(&model)
 	return
 }
 
 // Paginate 分页内容
 func Paginate(c *gin.Context, perPage int) (users []File, paging paginator.Paging) {
-	db := core.Global.DB.Model(File{})
+	db := database.DB.Model(File{})
 	if c.Query("storage") != "" {
 		db = db.Where("storage = ?", c.Query("storage"))
 	}

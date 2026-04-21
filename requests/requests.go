@@ -5,8 +5,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
-	"github.com/zero7cola/gin-admin-core/core"
 	"github.com/zero7cola/gin-admin-core/pkg/captcha"
+	"github.com/zero7cola/gin-admin-core/pkg/database"
 	"github.com/zero7cola/gin-admin-core/pkg/response"
 )
 
@@ -47,7 +47,7 @@ func ValidateStruct(data interface{}, messages map[string]map[string]string) map
 		tableName := parts[0]
 		columnName := parts[1]
 
-		var query = core.Global.DB.Table(tableName).Where(columnName+" = ?", fl.Field().Interface())
+		var query = database.DB.Table(tableName).Where(columnName+" = ?", fl.Field().Interface())
 
 		if len(parts) == 4 {
 			// 更新时：排除自身 ID

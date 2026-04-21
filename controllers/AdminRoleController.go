@@ -5,10 +5,10 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
-	"github.com/zero7cola/gin-admin-core/core"
 	"github.com/zero7cola/gin-admin-core/model/adminMenu"
 	"github.com/zero7cola/gin-admin-core/model/adminPermission"
 	"github.com/zero7cola/gin-admin-core/model/adminRole"
+	"github.com/zero7cola/gin-admin-core/pkg/database"
 	"github.com/zero7cola/gin-admin-core/pkg/response"
 	"github.com/zero7cola/gin-admin-core/requests"
 )
@@ -49,7 +49,7 @@ func (uc *AdminRoleController) Store(c *gin.Context) {
 		return
 	}
 
-	tx := core.Global.DB.Begin()
+	tx := database.DB.Begin()
 	defer func() {
 		if r := recover(); r != nil {
 			tx.Rollback()
@@ -110,7 +110,7 @@ func (uc *AdminRoleController) Update(c *gin.Context) {
 		return
 	}
 
-	tx := core.Global.DB.Begin()
+	tx := database.DB.Begin()
 	defer func() {
 		if r := recover(); r != nil {
 			tx.Rollback()

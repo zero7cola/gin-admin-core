@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/spf13/cast"
-	"github.com/zero7cola/gin-admin-core/core"
+	"github.com/zero7cola/gin-admin-core/pkg/database"
 	"gorm.io/gorm"
 )
 
@@ -26,7 +26,7 @@ func (a BaseModel) GetStringID() string {
 }
 
 func TableName(obj interface{}) string {
-	stmt := &gorm.Statement{DB: core.Global.DB}
+	stmt := &gorm.Statement{DB: database.DB}
 	stmt.Parse(obj)
 	return stmt.Schema.Table
 }

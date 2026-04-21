@@ -1,9 +1,9 @@
 package config
 
 import (
-	"github.com/zero7cola/gin-admin-core/core"
 	"github.com/zero7cola/gin-admin-core/internal"
 	"github.com/zero7cola/gin-admin-core/model"
+	"github.com/zero7cola/gin-admin-core/pkg/database"
 	"github.com/zero7cola/gin-admin-core/pkg/paginator"
 
 	"github.com/gin-gonic/gin"
@@ -29,38 +29,38 @@ type Config struct {
 
 // Create 创建用户，通过 User.ID 来判断是否创建成功
 func (model *Config) Create() {
-	core.Global.DB.Create(&model)
+	database.DB.Create(&model)
 }
 
 func (model *Config) Save() (rowsAffected int64) {
-	result := core.Global.DB.Save(&model)
+	result := database.DB.Save(&model)
 	return result.RowsAffected
 }
 
 func (model *Config) Delete() (rowsAffected int64) {
-	result := core.Global.DB.Delete(&model)
+	result := database.DB.Delete(&model)
 	return result.RowsAffected
 }
 
 func All() (models []Config) {
-	core.Global.DB.Find(&models)
+	database.DB.Find(&models)
 	return
 }
 
 func AllShow() (models []Config) {
-	core.Global.DB.Where("is_can_front = 1").Find(&models)
+	database.DB.Where("is_can_front = 1").Find(&models)
 	return
 }
 
 func Get(idstr string) (model Config) {
-	core.Global.DB.Where("id", idstr).First(&model)
+	database.DB.Where("id", idstr).First(&model)
 	return
 }
 
 // Paginate 分页内容
 func Paginate(c *gin.Context, perPage int) (users []Config, paging paginator.Paging) {
 
-	db := core.Global.DB.Model(Config{})
+	db := database.DB.Model(Config{})
 
 	if c.Query("config_key") != "" {
 		db = db.Where("config_key LIKE ?", "%"+c.Query("config_key")+"%")

@@ -5,8 +5,8 @@ import (
 	"sync"
 
 	"github.com/mojocn/base64Captcha"
-	"github.com/zero7cola/gin-admin-core/core"
 	"github.com/zero7cola/gin-admin-core/internal"
+	"github.com/zero7cola/gin-admin-core/pkg/redis"
 	"github.com/zero7cola/gin-admin-core/setting"
 )
 
@@ -28,7 +28,7 @@ func NewCaptcha() *Captcha {
 
 		// 使用全局 Redis 对象，并配置存储 Key 的前缀
 		store := RedisStore{
-			RedisClient: core.Global.Redis,
+			RedisClient: redis.Redis,
 			KeyPrefix:   setting.GlobalSetting.App.Name + ":captcha:",
 		}
 

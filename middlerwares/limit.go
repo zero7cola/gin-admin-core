@@ -1,11 +1,12 @@
 package middlewares
 
 import (
-	"github.com/zero7cola/gin-admin-core/core"
+	"net/http"
+
 	"github.com/zero7cola/gin-admin-core/internal"
 	"github.com/zero7cola/gin-admin-core/pkg/limiter"
+	"github.com/zero7cola/gin-admin-core/pkg/logger"
 	"github.com/zero7cola/gin-admin-core/pkg/response"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
@@ -57,7 +58,7 @@ func limitHandler(c *gin.Context, key string, limit string) bool {
 	// 获取超额的情况
 	rate, err := limiter.CheckRate(c, key, limit)
 	if err != nil {
-		core.Global.Logger.Error(err.Error())
+		logger.LogIf(err)
 		response.Abort500(c)
 		return false
 	}

@@ -11,6 +11,15 @@ import (
 	"gorm.io/gorm"
 )
 
+type InitConfig struct {
+	DB     *gorm.DB
+	Redis  *redis.Client
+	Logger *zap.Logger
+	Config *setting.Setting
+}
+
+type Option func(config *InitConfig)
+
 func LoadConfig(path string) (*InitConfig, error) {
 	v := viper.New()
 
@@ -32,21 +41,33 @@ func LoadConfig(path string) (*InitConfig, error) {
 	return &cfg, nil
 }
 
-func WithJWTSecret(jwt setting.JWTConfig) Option {
+func WithJWTConfig(jwt setting.JWTConfig) Option {
 	return func(c *InitConfig) {
 		c.Config.JWT = jwt
 	}
 }
 
-func WithApp(app setting.AppConfig) Option {
+func WithAppConfig(app setting.AppConfig) Option {
 	return func(c *InitConfig) {
 		c.Config.App = app
 	}
 }
 
-func WithStorage(storage setting.StorageConfig) Option {
+func WithStorageConfig(storage setting.StorageConfig) Option {
 	return func(c *InitConfig) {
 		c.Config.Storage = storage
+	}
+}
+
+func WithCaptchaConfig(config setting.CaptchaConfig) Option {
+	return func(c *InitConfig) {
+		c.Config.Captcha = config
+	}
+}
+
+func WithPagingConfig(config setting.PagingConfig) Option {
+	return func(c *InitConfig) {
+		c.Config.Paging = config
 	}
 }
 
@@ -68,23 +89,6 @@ func WithRedis(redis *redis.Client) Option {
 	}
 }
 
-type InitConfig struct {
-	DB     *gorm.DB
-	Redis  *redis.Client
-	Logger *zap.Logger
-	Config *setting.Setting
-}
-
-type appContext struct {
-	DB     *gorm.DB
-	Redis  *redisClient.RedisClient
-	Logger *zap.Logger
-}
-
-var Global *appContext
-
-type Option func(config *InitConfig)
-
 func InitWithFile(path string, opts ...Option) error {
 	// 1️⃣ 先加载文件
 	cfg, err := LoadConfig(path)
@@ -98,12 +102,12 @@ func InitWithFile(path string, opts ...Option) error {
 	}
 
 	// 3️⃣ 初始化内部 Context
-	Init(cfg)
+	internalInit(cfg)
 
 	return nil
 }
 
-func Init(c *InitConfig) {
+func internalInit(c *InitConfig) {
 	if c == nil {
 		panic("setting is nil")
 	}
@@ -116,11 +120,6 @@ func Init(c *InitConfig) {
 		panic("db is required")
 	}
 
-	Global = &appContext{
-		DB:     c.DB,
-		Logger: c.Logger,
-	}
-
 	logger.Logger = c.Logger
 	database.DB = c.DB
 	setting.GlobalSetting = c.Config
@@ -129,7 +128,6 @@ func Init(c *InitConfig) {
 		panic("redis is required")
 	} else {
 		rClient := redisClient.NewClient(c.Redis)
-		Global.Redis = rClient
 		redisClient.Redis = rClient
 	}
 

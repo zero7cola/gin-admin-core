@@ -2,11 +2,12 @@ package controllers
 
 import (
 	"fmt"
-	"github.com/zero7cola/gin-admin-core/setting"
 	"net/http"
 
+	"github.com/zero7cola/gin-admin-core/pkg/logger"
+	"github.com/zero7cola/gin-admin-core/setting"
+
 	"github.com/gin-gonic/gin"
-	"github.com/zero7cola/gin-admin-core/core"
 )
 
 type AdminIndexController struct {
@@ -15,7 +16,7 @@ type AdminIndexController struct {
 
 func (ic *AdminIndexController) Index(c *gin.Context) {
 
-	core.Global.Logger.Info("AdminIndexController Index")
+	logger.Info("AdminIndexController Index")
 
 	c.JSON(http.StatusOK, gin.H{
 		"code": 200,

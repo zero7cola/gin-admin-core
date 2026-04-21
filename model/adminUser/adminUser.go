@@ -1,7 +1,6 @@
 package adminUser
 
 import (
-	"github.com/zero7cola/gin-admin-core/core"
 	"github.com/zero7cola/gin-admin-core/internal"
 	"github.com/zero7cola/gin-admin-core/model"
 	"github.com/zero7cola/gin-admin-core/model/adminMenu"
@@ -34,7 +33,7 @@ func (model *AdminUser) TableName() string {
 
 func GetUserPermissions(userID uint64) ([]adminPermission.AdminPermission, error) {
 	var user AdminUser
-	if err := core.Global.DB.
+	if err := database.DB.
 		Preload("Roles.Permissions").
 		Where("id = ?", userID).
 		First(&user).Error; err != nil {
@@ -62,7 +61,7 @@ func GetUserPermissions(userID uint64) ([]adminPermission.AdminPermission, error
 
 func GetUserMenus(userID uint64) ([]adminMenu.AdminMenu, error) {
 	var user AdminUser
-	if err := core.Global.DB.
+	if err := database.DB.
 		Preload("Roles.Menus").
 		Where("id = ?", userID).
 		First(&user).Error; err != nil {
@@ -91,16 +90,16 @@ func GetUserMenus(userID uint64) ([]adminMenu.AdminMenu, error) {
 
 // Create 创建用户，通过 User.ID 来判断是否创建成功
 func (model *AdminUser) Create() {
-	core.Global.DB.Create(&model)
+	database.DB.Create(&model)
 }
 
 func (model *AdminUser) Save() (rowsAffected int64) {
-	result := core.Global.DB.Save(&model)
+	result := database.DB.Save(&model)
 	return result.RowsAffected
 }
 
 func (model *AdminUser) Delete() (rowsAffected int64) {
-	result := core.Global.DB.Delete(&model)
+	result := database.DB.Delete(&model)
 	return result.RowsAffected
 }
 
@@ -109,7 +108,7 @@ func (model *AdminUser) IsSuperAdmin() bool {
 }
 
 func Get(idstr string) (model AdminUser) {
-	core.Global.DB.Where("id", idstr).Preload("Roles").First(&model)
+	database.DB.Where("id", idstr).Preload("Roles").First(&model)
 	return
 }
 
@@ -132,7 +131,7 @@ func (model *AdminUser) ComparePassword(_password string) bool {
 
 // GetByMulti 通过 手机号/Email/用户名 来获取用户
 func GetByMulti(loginID string) (model AdminUser) {
-	core.Global.DB.
+	database.DB.
 		Where("username = ?", loginID).
 		First(&model)
 	return
