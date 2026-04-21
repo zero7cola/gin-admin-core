@@ -2,6 +2,7 @@ package adminPermission
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/zero7cola/gin-admin-core/core"
 	"github.com/zero7cola/gin-admin-core/internal"
 	"github.com/zero7cola/gin-admin-core/model"
 	"github.com/zero7cola/gin-admin-core/pkg/database"
@@ -21,26 +22,26 @@ type AdminPermission struct {
 
 // Create 创建用户，通过 User.ID 来判断是否创建成功
 func (model *AdminPermission) Create() {
-	database.DB.Create(&model)
+	core.Global.DB.Create(&model)
 }
 
 func (model *AdminPermission) Save() (rowsAffected int64) {
-	result := database.DB.Save(&model)
+	result := core.Global.DB.Save(&model)
 	return result.RowsAffected
 }
 
 func (model *AdminPermission) Delete() (rowsAffected int64) {
-	result := database.DB.Delete(&model)
+	result := core.Global.DB.Delete(&model)
 	return result.RowsAffected
 }
 
 func All() (models []AdminPermission) {
-	database.DB.Find(&models)
+	core.Global.DB.Find(&models)
 	return
 }
 
 func Get(idstr string) (userModel AdminPermission) {
-	database.DB.Where("id", idstr).First(&userModel)
+	core.Global.DB.Where("id", idstr).First(&userModel)
 	return
 }
 
@@ -48,7 +49,7 @@ func Get(idstr string) (userModel AdminPermission) {
 func Paginate(c *gin.Context, perPage int) (users []AdminPermission, paging paginator.Paging) {
 	paging = paginator.Paginate(
 		c,
-		database.DB.Model(AdminPermission{}),
+		core.Global.DB.Model(AdminPermission{}),
 		&users,
 		internal.VADMINURL(database.TableName(&AdminPermission{})),
 		perPage,

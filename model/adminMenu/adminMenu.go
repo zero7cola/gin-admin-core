@@ -2,6 +2,7 @@ package adminMenu
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/zero7cola/gin-admin-core/core"
 	"github.com/zero7cola/gin-admin-core/internal"
 	"github.com/zero7cola/gin-admin-core/model"
 	"github.com/zero7cola/gin-admin-core/pkg/database"
@@ -20,26 +21,26 @@ type AdminMenu struct {
 
 // Create 创建用户，通过 User.ID 来判断是否创建成功
 func (model *AdminMenu) Create() {
-	database.DB.Create(&model)
+	core.Global.DB.Create(&model)
 }
 
 func (model *AdminMenu) Save() (rowsAffected int64) {
-	result := database.DB.Save(&model)
+	result := core.Global.DB.Save(&model)
 	return result.RowsAffected
 }
 
 func (model *AdminMenu) Delete() (rowsAffected int64) {
-	result := database.DB.Delete(&model)
+	result := core.Global.DB.Delete(&model)
 	return result.RowsAffected
 }
 
 func All() (models []AdminMenu) {
-	database.DB.Find(&models)
+	core.Global.DB.Find(&models)
 	return
 }
 
 func Get(idstr string) (userModel AdminMenu) {
-	database.DB.Where("id", idstr).First(&userModel)
+	core.Global.DB.Where("id", idstr).First(&userModel)
 	return
 }
 
@@ -47,7 +48,7 @@ func Get(idstr string) (userModel AdminMenu) {
 func Paginate(c *gin.Context, perPage int) (users []AdminMenu, paging paginator.Paging) {
 	paging = paginator.Paginate(
 		c,
-		database.DB.Model(AdminMenu{}),
+		core.Global.DB.Model(AdminMenu{}),
 		&users,
 		internal.VADMINURL(database.TableName(&AdminMenu{})),
 		perPage,

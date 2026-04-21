@@ -6,10 +6,10 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
+	"github.com/zero7cola/gin-admin-core/core"
 	"github.com/zero7cola/gin-admin-core/model/adminRole"
 	"github.com/zero7cola/gin-admin-core/model/adminUser"
 	"github.com/zero7cola/gin-admin-core/pkg/auth"
-	"github.com/zero7cola/gin-admin-core/pkg/database"
 	"github.com/zero7cola/gin-admin-core/pkg/helpers"
 	"github.com/zero7cola/gin-admin-core/pkg/response"
 	"github.com/zero7cola/gin-admin-core/requests"
@@ -44,7 +44,7 @@ func (uc *AdminUserController) Store(c *gin.Context) {
 		return
 	}
 
-	tx := database.DB.Begin()
+	tx := core.Global.DB.Begin()
 	defer func() {
 		if r := recover(); r != nil {
 			tx.Rollback()
@@ -97,7 +97,7 @@ func (uc *AdminUserController) Update(c *gin.Context) {
 		return
 	}
 
-	tx := database.DB.Begin()
+	tx := core.Global.DB.Begin()
 	defer func() {
 		if r := recover(); r != nil {
 			tx.Rollback()

@@ -2,6 +2,7 @@ package adminRole
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/zero7cola/gin-admin-core/core"
 	"github.com/zero7cola/gin-admin-core/internal"
 	"github.com/zero7cola/gin-admin-core/model"
 	"github.com/zero7cola/gin-admin-core/model/adminMenu"
@@ -21,26 +22,26 @@ type AdminRole struct {
 
 // Create 创建用户，通过 User.ID 来判断是否创建成功
 func (userModel *AdminRole) Create() {
-	database.DB.Create(&userModel)
+	core.Global.DB.Create(&userModel)
 }
 
 func (userModel *AdminRole) Save() (rowsAffected int64) {
-	result := database.DB.Save(&userModel)
+	result := core.Global.DB.Save(&userModel)
 	return result.RowsAffected
 }
 
 func (userModel *AdminRole) Delete() (rowsAffected int64) {
-	result := database.DB.Delete(&userModel)
+	result := core.Global.DB.Delete(&userModel)
 	return result.RowsAffected
 }
 
 func All() (models []AdminRole) {
-	database.DB.Find(&models)
+	core.Global.DB.Find(&models)
 	return
 }
 
 func Get(idstr string) (userModel AdminRole) {
-	database.DB.Where("id", idstr).Preload("Menus").Preload("Permissions").First(&userModel)
+	core.Global.DB.Where("id", idstr).Preload("Menus").Preload("Permissions").First(&userModel)
 	return
 }
 
@@ -48,7 +49,7 @@ func Get(idstr string) (userModel AdminRole) {
 func Paginate(c *gin.Context, perPage int) (users []AdminRole, paging paginator.Paging) {
 	paging = paginator.Paginate(
 		c,
-		database.DB.Model(AdminRole{}),
+		core.Global.DB.Model(AdminRole{}),
 		&users,
 		internal.VADMINURL(database.TableName(&AdminRole{})),
 		perPage,
