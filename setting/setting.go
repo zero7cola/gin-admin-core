@@ -53,12 +53,14 @@ type PagingConfig struct {
 }
 
 type CaptchaConfig struct {
-	Height     int     `mapstructure:"height" yaml:"height"`
-	Width      int     `mapstructure:"width" yaml:"width"`
-	Length     int     `mapstructure:"length" yaml:"length"`
-	Maxskew    float64 `mapstructure:"maxskew" yaml:"maxskew"`
-	Dotcount   int     `mapstructure:"dotcount" yaml:"dotcount"`
-	ExpireTime int     `mapstructure:"expire_time" yaml:"expire_time"`
+	Height          int     `mapstructure:"height" yaml:"height"`
+	Width           int     `mapstructure:"width" yaml:"width"`
+	Length          int     `mapstructure:"length" yaml:"length"`
+	Maxskew         float64 `mapstructure:"maxskew" yaml:"maxskew"`
+	Dotcount        int     `mapstructure:"dotcount" yaml:"dotcount"`
+	ExpireTime      int     `mapstructure:"expire_time" yaml:"expire_time"`
+	DebugExpireTime int     `mapstructure:"debug_expire_time" yaml:"debug_expire_time"`
+	TestingKey      string  `mapstructure:"testing_key" yaml:"testing_key"`
 }
 
 type JWTConfig struct {

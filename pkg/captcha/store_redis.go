@@ -4,6 +4,7 @@ import (
 	"errors"
 	"time"
 
+	"github.com/zero7cola/gin-admin-core/internal"
 	"github.com/zero7cola/gin-admin-core/pkg/redis"
 	"github.com/zero7cola/gin-admin-core/setting"
 )
@@ -18,6 +19,11 @@ type RedisStore struct {
 func (s *RedisStore) Set(key string, value string) error {
 
 	ExpireTime := time.Minute * time.Duration(setting.GlobalSetting.Captcha.ExpireTime)
+
+	// 方便本地开发调试
+	if internal.IsDebug() {
+		ExpireTime = time.Minute * time.Duration(setting.GlobalSetting.Captcha.DebugExpireTime)
+	}
 
 	if ok := s.RedisClient.Set(s.KeyPrefix+key, value, ExpireTime); !ok {
 		return errors.New("无法存储图片验证码答案")
