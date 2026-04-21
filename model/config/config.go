@@ -74,7 +74,7 @@ func Paginate(c *gin.Context, perPage int) (users []Config, paging paginator.Pag
 		c,
 		db,
 		&users,
-		internal.VADMINURL(internal.TableName(&Config{})),
+		internal.VADMINURL(model.TableName(&Config{})),
 		perPage,
 	)
 	return

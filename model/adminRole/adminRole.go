@@ -50,7 +50,7 @@ func Paginate(c *gin.Context, perPage int) (users []AdminRole, paging paginator.
 		c,
 		core.Global.DB.Model(AdminRole{}),
 		&users,
-		internal.VADMINURL(internal.TableName(&AdminRole{})),
+		internal.VADMINURL(model.TableName(&AdminRole{})),
 		perPage,
 	)
 	return

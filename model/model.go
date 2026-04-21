@@ -5,6 +5,8 @@ import (
 	"time"
 
 	"github.com/spf13/cast"
+	"github.com/zero7cola/gin-admin-core/core"
+	"gorm.io/gorm"
 )
 
 // BaseModel 模型基类
@@ -21,4 +23,10 @@ type CommonTimestampsField struct {
 // GetStringID 获取 ID 的字符串格式
 func (a BaseModel) GetStringID() string {
 	return cast.ToString(a.ID)
+}
+
+func TableName(obj interface{}) string {
+	stmt := &gorm.Statement{DB: core.Global.DB}
+	stmt.Parse(obj)
+	return stmt.Schema.Table
 }

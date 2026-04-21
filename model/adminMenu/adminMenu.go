@@ -49,7 +49,7 @@ func Paginate(c *gin.Context, perPage int) (users []AdminMenu, paging paginator.
 		c,
 		core.Global.DB.Model(AdminMenu{}),
 		&users,
-		internal.VADMINURL(internal.TableName(&AdminMenu{})),
+		internal.VADMINURL(model.TableName(&AdminMenu{})),
 		perPage,
 	)
 	return

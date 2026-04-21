@@ -1,9 +1,7 @@
 package internal
 
 import (
-	"github.com/zero7cola/gin-admin-core/core"
 	"github.com/zero7cola/gin-admin-core/setting"
-	"gorm.io/gorm"
 
 	"time"
 )
@@ -43,10 +41,4 @@ func VADMINURL(path string) string {
 // V1URL 拼接带 v1 标示 URL
 func V1URL(path string) string {
 	return URL("/v1/" + path)
-}
-
-func TableName(obj interface{}) string {
-	stmt := &gorm.Statement{DB: core.Global.DB}
-	stmt.Parse(obj)
-	return stmt.Schema.Table
 }
