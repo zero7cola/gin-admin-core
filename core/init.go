@@ -107,6 +107,21 @@ func InitWithFile(path string, opts ...Option) error {
 	return nil
 }
 
+func Init(opts ...Option) error {
+	// 1️⃣ 先加载文件
+	cfg := &InitConfig{}
+
+	// 2️⃣ 应用手动配置（覆盖）
+	for _, opt := range opts {
+		opt(cfg)
+	}
+
+	// 3️⃣ 初始化内部 Context
+	internalInit(cfg)
+
+	return nil
+}
+
 func internalInit(c *InitConfig) {
 	if c == nil {
 		panic("setting is nil")
