@@ -33,13 +33,14 @@ type File struct {
 	ETag         string     `gorm:"column:e_tag" json:"e_tag"`
 	Bucket       string     `gorm:"column:bucket" json:"bucket"`
 	LastModified time.Time  `gorm:"column:last_modified" json:"last_modified"`
+	FullUrl      string     `gorm:"-" json:"full_url"`
 	DeletedAt    *time.Time `gorm:"column:deleted_at" json:"deleted_at"`
 	model.CommonTimestampsField
 }
 
 // 查询后
 func (model *File) AfterFind(tx *gorm.DB) (err error) {
-	model.Url = model.GetFileFullUrl()
+	model.FullUrl = model.GetFileFullUrl()
 	return
 }
 

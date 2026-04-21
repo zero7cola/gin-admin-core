@@ -46,23 +46,23 @@ func NewFileService(drive ...string) *FileService {
 	}
 }
 
-func (s *FileService) UploadFile(c *gin.Context) (fileModel.File, error) {
+func (s *FileService) UploadFile(c *gin.Context) (*fileModel.File, error) {
 	// 从 form-data 获取文件
 	fileObj, header, err := c.Request.FormFile("file")
 	if err != nil {
-		return fileModel.File{}, err
+		return nil, err
 	}
 	defer fileObj.Close()
 
 	// 验证大小
 	if header.Size > cast.ToInt64(setting.GlobalSetting.Storage.SizeLimit) {
-		return fileModel.File{}, errors.New("超过最大文件大小")
+		return nil, errors.New("超过最大文件大小")
 	}
 
 	// 验证后缀
 	extLimit := cast.ToStringSlice(setting.GlobalSetting.Storage.Ext)
 	if helpers.FindElement(extLimit, strings.ToLower(helpers.GetFileExt(header.Filename))) < 0 {
-		return fileModel.File{}, errors.New("文件格式不允许 只允许[ " + strings.Join(extLimit, " ") + " ]")
+		return nil, errors.New("文件格式不允许 只允许[ " + strings.Join(extLimit, " ") + " ]")
 	}
 
 	input := file.PutObjectInput{
@@ -77,11 +77,11 @@ func (s *FileService) UploadFile(c *gin.Context) (fileModel.File, error) {
 	// 上传
 	obj, putErr := s.storage.Put(c, input)
 	if putErr != nil {
-		return fileModel.File{}, putErr
+		return nil, putErr
 	}
 
 	// 存入数据库
-	fileStore := fileModel.File{}
+	fileStore := &fileModel.File{}
 	fileStore.Bucket = obj.Bucket
 	fileStore.Name = obj.Name
 	fileStore.OriginName = obj.OriginName
@@ -97,10 +97,9 @@ func (s *FileService) UploadFile(c *gin.Context) (fileModel.File, error) {
 	fileStore.UserId = 99
 	fileStore.GroupId = cast.ToInt(c.DefaultPostForm("group_id", "99"))
 	fileStore.Type = cast.ToInt(c.DefaultPostForm("type", "1"))
-	fileStore.Create()
 
 	// 组装url
-	fileStore.Url = fileStore.GetFileFullUrl()
+	fileStore.FullUrl = fileStore.GetFileFullUrl()
 	return fileStore, nil
 }
 

@@ -1,12 +1,13 @@
 package controllers
 
 import (
+	"time"
+
 	fileModel "github.com/zero7cola/gin-admin-core/model/file"
 	"github.com/zero7cola/gin-admin-core/pkg/auth"
 	"github.com/zero7cola/gin-admin-core/pkg/response"
 	"github.com/zero7cola/gin-admin-core/requests"
 	"github.com/zero7cola/gin-admin-core/services"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
@@ -73,6 +74,10 @@ func (uc *AdminFileController) Upload(c *gin.Context) {
 	if err != nil {
 		response.Fail(c, err.Error())
 		return
+	}
+
+	if obj != nil {
+		obj.Create()
 	}
 
 	response.Data(c, obj)
