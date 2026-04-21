@@ -3,10 +3,13 @@ package middlewares
 
 import (
 	"bytes"
-	"github.com/zero7cola/gin-admin-core/pkg/helpers"
-	"github.com/zero7cola/gin-admin-core/pkg/logger"
 	"io"
 	"time"
+
+	"github.com/zero7cola/gin-admin-core/model/adminOperationLog"
+	"github.com/zero7cola/gin-admin-core/pkg/auth"
+	"github.com/zero7cola/gin-admin-core/pkg/helpers"
+	"github.com/zero7cola/gin-admin-core/pkg/logger"
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
@@ -63,6 +66,13 @@ func Logger() gin.HandlerFunc {
 
 			// 响应的内容
 			logFields = append(logFields, zap.String("Response Body", w.body.String()))
+
+			adminLog := adminOperationLog.AdminOperationLog{}
+			adminLog.UserId = cast.ToUint64(auth.CurrentAdminUID(c))
+			adminLog.Path = c.Request.URL.Path
+			adminLog.Method = c.Request.Method
+			adminLog.Input = string(requestBody)
+			adminLog.Create()
 		}
 
 		if responStatus > 400 && responStatus <= 499 {
