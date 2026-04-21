@@ -86,6 +86,13 @@ func RegisterAdminRoutes(admin *gin.RouterGroup) {
 		admin.PUT("/file/:id", fc.Update)
 		admin.DELETE("/file/:id", fc.Delete)
 
+		olc := new(controllers.AdminOperationController)
+		admin.POST("/log", olc.Store)
+		admin.GET("/logs", olc.Index)
+		admin.GET("/log/:id", olc.Get)
+		admin.PUT("/log/:id", olc.Update)
+		admin.DELETE("/log/:id", olc.Delete)
+
 	}
 
 }
