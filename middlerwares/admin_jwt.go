@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/zero7cola/gin-admin-core/internal"
 	"github.com/zero7cola/gin-admin-core/model/adminUser"
 	"github.com/zero7cola/gin-admin-core/pkg/helpers"
 	"github.com/zero7cola/gin-admin-core/pkg/jwt"
@@ -22,13 +23,13 @@ func AuthAdminJWT() gin.HandlerFunc {
 		c.Query("name") // "abc"        query参数
 		*/
 		path := c.FullPath()
-		ignorePaths := []string{"/admin/auth/login", "/admin/auth/captcha", "/admin/upload", "/admin/version", "/admin/test"} // 忽略的路径无需验证
 		ignorePermissionPaths := []string{"/admin/auth/logout", "/admin/auth/refresh-token", "/admin/roles/all", "/admin/permissions/all", "/admin/menus/all", "/admin/auth/current"}
 
 		//if !app.IsProduction() {
 		//	fmt.Printf("full :%s path :%s \n", c.FullPath(), c.Request.URL.Path)
 		//}
 
+		ignorePaths := internal.GetIgnorePaths()
 		//
 		if !helpers.StringContains(ignorePaths, path) {
 			// 从标头 Authorization:Bearer xxxxx 中获取信息，并验证 JWT 的准确性
