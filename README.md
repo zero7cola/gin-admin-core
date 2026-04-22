@@ -16,8 +16,8 @@ func main() {
 	// 手动传入实例和配置
     // err = core.Init(
     //	core.WithDB(db),
-    //	core.WithRedis(redis.Redis.Client),
-    //	core.WithLogger(logger.Logger),
+    //	core.WithRedis(redis),
+    //	core.WithLogger(logger),
     //	core.WithAppConfig(setting.AppConfig{}),
     //	core.WithCaptchaConfig(setting.CaptchaConfig{}),
     //	core.WithJWTConfig(setting.JWTConfig{}),
