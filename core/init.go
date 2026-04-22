@@ -3,6 +3,13 @@ package core
 import (
 	"github.com/redis/go-redis/v9"
 	"github.com/spf13/viper"
+	"github.com/zero7cola/gin-admin-core/model/adminMenu"
+	"github.com/zero7cola/gin-admin-core/model/adminOperationLog"
+	"github.com/zero7cola/gin-admin-core/model/adminPermission"
+	"github.com/zero7cola/gin-admin-core/model/adminRole"
+	"github.com/zero7cola/gin-admin-core/model/adminUser"
+	configModel "github.com/zero7cola/gin-admin-core/model/config"
+	fileModel "github.com/zero7cola/gin-admin-core/model/file"
 	"github.com/zero7cola/gin-admin-core/pkg/cache"
 	"github.com/zero7cola/gin-admin-core/pkg/database"
 	"github.com/zero7cola/gin-admin-core/pkg/logger"
@@ -10,6 +17,7 @@ import (
 	"github.com/zero7cola/gin-admin-core/setting"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 type InitConfig struct {
@@ -158,4 +166,130 @@ func internalInit(c *InitConfig) {
 		cache.Cache = c.Cache
 	}
 
+	//
+	err := insertInitData()
+
+	if err != nil {
+		logger.LogIf(err)
+		panic(err)
+	}
+
+}
+
+func insertInitData() error {
+
+	err := database.DB.AutoMigrate(
+		&adminUser.AdminUser{},
+		&adminRole.AdminRole{},
+		&adminMenu.AdminMenu{},
+		&adminPermission.AdminPermission{},
+		&fileModel.File{},
+		&adminOperationLog.AdminOperationLog{},
+		&configModel.Config{},
+	)
+
+	if err != nil {
+		return err
+	}
+
+	err = seedAdminUser()
+
+	if err != nil {
+		return err
+	}
+
+	err = seedAdminMenus()
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func insertIgnoreOrUpdate(data interface{}, isUp bool) error {
+	if isUp {
+		return database.DB.Clauses(clause.OnConflict{
+			UpdateAll: true,
+		}).Create(data).Error
+	}
+
+	return database.DB.Clauses(clause.OnConflict{
+		DoNothing: true,
+	}).Create(data).Error
+}
+
+func seedAdminUser() error {
+	var users = []adminUser.AdminUser{
+		{
+			Username: "admin",
+			Password: "$2a$14$UPDOeuhOq6k6o2jnp3rCnudpcogjfSImV9hsHjKSEuMsPdoWY9Pk6",
+			Name:     "Administrator",
+		},
+	}
+
+	return insertIgnoreOrUpdate(users, false)
+}
+
+func seedAdminMenus() error {
+	var menus = []adminMenu.AdminMenu{
+		{
+			ParentId: 0,
+			Order:    1,
+			Name:     "管理后台",
+			Icon:     "el-icon-s-management",
+			Uri:      "",
+		},
+		{
+			ParentId: 1,
+			Order:    2,
+			Name:     "管理员",
+			Icon:     "el-icon-user",
+			Uri:      "admin/users/index",
+		},
+		{
+			ParentId: 1,
+			Order:    3,
+			Name:     "角色",
+			Icon:     "el-icon-user-solid",
+			Uri:      "admin/roles/index",
+		},
+		{
+			ParentId: 1,
+			Order:    4,
+			Name:     "权限",
+			Icon:     "el-icon-lock",
+			Uri:      "admin/permissions/index",
+		},
+		{
+			ParentId: 1,
+			Order:    5,
+			Name:     "菜单",
+			Icon:     "el-icon-menu",
+			Uri:      "admin/menus/index",
+		},
+		{
+			ParentId: 1,
+			Order:    6,
+			Name:     "日志",
+			Icon:     "el-icon-notebook-2",
+			Uri:      "admin/logs/index",
+		},
+		{
+			ParentId: 1,
+			Order:    7,
+			Name:     "文件",
+			Icon:     "el-icon-files",
+			Uri:      "admin/files/index",
+		},
+		{
+			ParentId: 1,
+			Order:    8,
+			Name:     "配置",
+			Icon:     "el-icon-setting",
+			Uri:      "admin/configs/index",
+		},
+	}
+
+	return insertIgnoreOrUpdate(menus, false)
 }

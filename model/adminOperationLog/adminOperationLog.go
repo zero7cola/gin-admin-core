@@ -17,7 +17,7 @@ type AdminOperationLog struct {
 	Url       string              `json:"url" gorm:"url"`
 	Method    string              `json:"method" gorm:"method"`
 	Ip        string              `json:"ip" gorm:"ip"`
-	Input     string              `json:"input" gorm:"input"`
+	Input     string              `json:"input" gorm:"type:text;column:input"`
 	model.CommonTimestampsField
 }
 
