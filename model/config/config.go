@@ -27,6 +27,10 @@ type Config struct {
 	model.CommonTimestampsField
 }
 
+func (model *Config) TableName() string {
+	return "configs"
+}
+
 // Create 创建用户，通过 User.ID 来判断是否创建成功
 func (model *Config) Create() {
 	database.DB.Create(&model)

@@ -21,7 +21,7 @@ type AdminOperationLog struct {
 	model.CommonTimestampsField
 }
 
-func TableName() string {
+func (model *AdminOperationLog) TableName() string {
 	return "admin_operation_logs"
 }
 
@@ -62,7 +62,7 @@ func Paginate(c *gin.Context, perPage int) (data []AdminOperationLog, paging pag
 		c,
 		db,
 		&data,
-		internal.VADMINURL(TableName()),
+		internal.VADMINURL(model.TableName(&AdminOperationLog{})),
 		perPage,
 	)
 	return

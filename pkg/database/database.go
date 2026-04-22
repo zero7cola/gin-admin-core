@@ -28,9 +28,3 @@ var SQLDB *sql.DB
 //		fmt.Println(err.Error())
 //	}
 //}
-
-func TableName(obj interface{}) string {
-	stmt := &gorm.Statement{DB: DB}
-	stmt.Parse(obj)
-	return stmt.Schema.Table
-}

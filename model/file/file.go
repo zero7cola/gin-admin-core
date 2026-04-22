@@ -38,6 +38,10 @@ type File struct {
 	model.CommonTimestampsField
 }
 
+func (model *File) TableName() string {
+	return "files"
+}
+
 // 查询后
 func (model *File) AfterFind(tx *gorm.DB) (err error) {
 	model.FullUrl = model.GetFileFullUrl()

@@ -18,6 +18,10 @@ type AdminMenu struct {
 	model.CommonTimestampsField
 }
 
+func (model *AdminMenu) TableName() string {
+	return "admin_menus"
+}
+
 // Create 创建用户，通过 User.ID 来判断是否创建成功
 func (model *AdminMenu) Create() {
 	database.DB.Create(&model)

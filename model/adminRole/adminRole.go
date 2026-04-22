@@ -19,18 +19,22 @@ type AdminRole struct {
 	model.CommonTimestampsField
 }
 
-// Create 创建用户，通过 User.ID 来判断是否创建成功
-func (userModel *AdminRole) Create() {
-	database.DB.Create(&userModel)
+func (model *AdminRole) TableName() string {
+	return "admin_roles"
 }
 
-func (userModel *AdminRole) Save() (rowsAffected int64) {
-	result := database.DB.Save(&userModel)
+// Create 创建用户，通过 User.ID 来判断是否创建成功
+func (model *AdminRole) Create() {
+	database.DB.Create(&model)
+}
+
+func (model *AdminRole) Save() (rowsAffected int64) {
+	result := database.DB.Save(&model)
 	return result.RowsAffected
 }
 
-func (userModel *AdminRole) Delete() (rowsAffected int64) {
-	result := database.DB.Delete(&userModel)
+func (model *AdminRole) Delete() (rowsAffected int64) {
+	result := database.DB.Delete(&model)
 	return result.RowsAffected
 }
 
@@ -39,8 +43,8 @@ func All() (models []AdminRole) {
 	return
 }
 
-func Get(idstr string) (userModel AdminRole) {
-	database.DB.Where("id", idstr).Preload("Menus").Preload("Permissions").First(&userModel)
+func Get(idstr string) (model AdminRole) {
+	database.DB.Where("id", idstr).Preload("Menus").Preload("Permissions").First(&model)
 	return
 }
 
