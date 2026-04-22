@@ -51,9 +51,15 @@ func Get(idstr string) (model AdminOperationLog) {
 
 // Paginate 分页内容
 func Paginate(c *gin.Context, perPage int) (data []AdminOperationLog, paging paginator.Paging) {
+	db := database.DB.Model(AdminOperationLog{})
+
+	if c.Query("path") != "" {
+		db = db.Where("path LIKE ?", "%"+c.Query("path")+"%")
+	}
+
 	paging = paginator.Paginate(
 		c,
-		database.DB.Model(AdminOperationLog{}),
+		db,
 		&data,
 		internal.VADMINURL(TableName()),
 		perPage,

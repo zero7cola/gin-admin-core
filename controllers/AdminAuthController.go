@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"fmt"
+
 	"github.com/gin-gonic/gin"
 	"github.com/zero7cola/gin-admin-core/internal"
 	"github.com/zero7cola/gin-admin-core/model/adminUser"
@@ -42,6 +43,8 @@ func (ac *AdminAuthController) Login(c *gin.Context) {
 		}
 
 		userModel.Menus = menus
+
+		c.Set("current_admin_user_id", userModel.GetStringID())
 
 		response.Data(c, gin.H{
 			"token": token,
