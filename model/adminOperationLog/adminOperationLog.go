@@ -14,6 +14,7 @@ type AdminOperationLog struct {
 	AdminUser adminUser.AdminUser `json:"admin_user" gorm:"foreignKey:UserId;references:ID"`
 	UserId    uint64              `json:"user_id" gorm:"user_id"`
 	Path      string              `json:"path" gorm:"path"`
+	Url       string              `json:"url" gorm:"url"`
 	Method    string              `json:"method" gorm:"method"`
 	Ip        string              `json:"ip" gorm:"ip"`
 	Input     string              `json:"input" gorm:"input"`

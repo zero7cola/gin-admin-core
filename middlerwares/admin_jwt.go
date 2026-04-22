@@ -16,10 +16,10 @@ func AuthAdminJWT() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
 		/**
-		c.FullPath()   // "/user/:id"   ✅ 路由模板
-		c.Request.URL.Path  // "/user/123"  ✅ 实际路径
-		c.Param("id")  // "123"         ✅ 路径参数
-		c.Query("name") // "abc"        ✅ query参数
+		c.FullPath()   // "/user/:id"   路由模板
+		c.Request.URL.Path  // "/user/123"  实际路径
+		c.Param("id")  // "123"         路径参数
+		c.Query("name") // "abc"        query参数
 		*/
 		path := c.FullPath()
 		ignorePaths := []string{"/admin/auth/login", "/admin/auth/captcha", "/admin/upload", "/admin/version", "/admin/test"} // 忽略的路径无需验证
