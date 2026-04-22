@@ -10,9 +10,20 @@ func main() {
 	redis := getRedis()
     logger := getLogger()
 
-	// 传入配置,并传入必要的实例
-	path, _ := filepath.Abs("config.yaml")
-	err = core.InitWithFile(path, core.WithDB(db), core.WithRedis(redis), core.WithLogger(logger))
+	// 通过配置文件传入配置,并传入必要的实例
+	err = core.InitWithFile("config.yaml", core.WithDB(db), core.WithRedis(redis), core.WithLogger(logger))
+
+	// 手动传入实例和配置
+    // err = core.Init(
+    //	core.WithDB(db),
+    //	core.WithRedis(redis.Redis.Client),
+    //	core.WithLogger(logger.Logger),
+    //	core.WithAppConfig(setting.AppConfig{}),
+    //	core.WithCaptchaConfig(setting.CaptchaConfig{}),
+    //	core.WithJWTConfig(setting.JWTConfig{}),
+    //	core.WithStorageConfig(setting.StorageConfig{}),
+    //	core.WithPagingConfig(setting.PagingConfig{}),
+    //)
 
     if err != nil {
 		panic(err)
