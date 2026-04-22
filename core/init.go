@@ -3,6 +3,7 @@ package core
 import (
 	"github.com/redis/go-redis/v9"
 	"github.com/spf13/viper"
+	"github.com/zero7cola/gin-admin-core/model"
 	"github.com/zero7cola/gin-admin-core/model/adminMenu"
 	"github.com/zero7cola/gin-admin-core/model/adminOperationLog"
 	"github.com/zero7cola/gin-admin-core/model/adminPermission"
@@ -222,6 +223,9 @@ func insertIgnoreOrUpdate(data interface{}, isUp bool) error {
 func seedAdminUser() error {
 	var users = []adminUser.AdminUser{
 		{
+			BaseModel: model.BaseModel{
+				ID: 1,
+			},
 			Username: "admin",
 			Password: "$2a$14$UPDOeuhOq6k6o2jnp3rCnudpcogjfSImV9hsHjKSEuMsPdoWY9Pk6",
 			Name:     "Administrator",
@@ -234,6 +238,9 @@ func seedAdminUser() error {
 func seedAdminMenus() error {
 	var menus = []adminMenu.AdminMenu{
 		{
+			BaseModel: model.BaseModel{
+				ID: 1,
+			},
 			ParentId: 0,
 			Order:    1,
 			Name:     "管理后台",
@@ -241,6 +248,9 @@ func seedAdminMenus() error {
 			Uri:      "",
 		},
 		{
+			BaseModel: model.BaseModel{
+				ID: 2,
+			},
 			ParentId: 1,
 			Order:    2,
 			Name:     "管理员",
@@ -248,6 +258,9 @@ func seedAdminMenus() error {
 			Uri:      "admin/users/index",
 		},
 		{
+			BaseModel: model.BaseModel{
+				ID: 3,
+			},
 			ParentId: 1,
 			Order:    3,
 			Name:     "角色",
@@ -255,6 +268,9 @@ func seedAdminMenus() error {
 			Uri:      "admin/roles/index",
 		},
 		{
+			BaseModel: model.BaseModel{
+				ID: 4,
+			},
 			ParentId: 1,
 			Order:    4,
 			Name:     "权限",
@@ -262,6 +278,9 @@ func seedAdminMenus() error {
 			Uri:      "admin/permissions/index",
 		},
 		{
+			BaseModel: model.BaseModel{
+				ID: 5,
+			},
 			ParentId: 1,
 			Order:    5,
 			Name:     "菜单",
@@ -269,6 +288,9 @@ func seedAdminMenus() error {
 			Uri:      "admin/menus/index",
 		},
 		{
+			BaseModel: model.BaseModel{
+				ID: 6,
+			},
 			ParentId: 1,
 			Order:    6,
 			Name:     "日志",
@@ -276,6 +298,9 @@ func seedAdminMenus() error {
 			Uri:      "admin/logs/index",
 		},
 		{
+			BaseModel: model.BaseModel{
+				ID: 7,
+			},
 			ParentId: 1,
 			Order:    7,
 			Name:     "文件",
@@ -283,6 +308,9 @@ func seedAdminMenus() error {
 			Uri:      "admin/files/index",
 		},
 		{
+			BaseModel: model.BaseModel{
+				ID: 8,
+			},
 			ParentId: 1,
 			Order:    8,
 			Name:     "配置",
