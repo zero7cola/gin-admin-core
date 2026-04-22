@@ -13,7 +13,7 @@ type AdminMenuController struct {
 
 func (uc *AdminMenuController) Index(c *gin.Context) {
 
-	data, pager := adminMenu.Paginate(c, 5)
+	data, pager := adminMenu.Paginate(c, GetPerPage(c))
 
 	response.Data(c, gin.H{
 		"data":  data,

@@ -19,7 +19,7 @@ type AdminFileController struct {
 
 func (uc *AdminFileController) Index(c *gin.Context) {
 
-	data, pager := fileModel.Paginate(c, 5)
+	data, pager := fileModel.Paginate(c, GetPerPage(c))
 
 	response.Data(c, gin.H{
 		"data":  data,

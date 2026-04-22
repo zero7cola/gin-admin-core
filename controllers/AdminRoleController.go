@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/spf13/cast"
 	"github.com/zero7cola/gin-admin-core/model/adminMenu"
 	"github.com/zero7cola/gin-admin-core/model/adminPermission"
 	"github.com/zero7cola/gin-admin-core/model/adminRole"
@@ -19,8 +18,7 @@ type AdminRoleController struct {
 
 func (uc *AdminRoleController) Index(c *gin.Context) {
 
-	perPage := c.DefaultQuery("per_page", "10")
-	data, pager := adminRole.Paginate(c, cast.ToInt(perPage))
+	data, pager := adminRole.Paginate(c, GetPerPage(c))
 
 	response.Data(c, gin.H{
 		"data":  data,

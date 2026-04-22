@@ -14,7 +14,7 @@ type AdminConfigController struct {
 
 func (uc *AdminConfigController) Index(c *gin.Context) {
 
-	data, pager := configModel.Paginate(c, 5)
+	data, pager := configModel.Paginate(c, GetPerPage(c))
 
 	response.Data(c, gin.H{
 		"data":  data,

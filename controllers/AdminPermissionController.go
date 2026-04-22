@@ -1,11 +1,12 @@
 package controllers
 
 import (
+	"strings"
+
 	"github.com/gin-gonic/gin"
 	"github.com/zero7cola/gin-admin-core/model/adminPermission"
 	"github.com/zero7cola/gin-admin-core/pkg/response"
 	"github.com/zero7cola/gin-admin-core/requests"
-	"strings"
 )
 
 type AdminPermissionController struct {
@@ -14,7 +15,7 @@ type AdminPermissionController struct {
 
 func (uc *AdminPermissionController) Index(c *gin.Context) {
 
-	data, pager := adminPermission.Paginate(c, 10)
+	data, pager := adminPermission.Paginate(c, GetPerPage(c))
 
 	response.Data(c, gin.H{
 		"data":  data,

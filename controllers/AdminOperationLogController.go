@@ -17,7 +17,7 @@ type AdminOperationController struct {
 
 func (uc *AdminOperationController) Index(c *gin.Context) {
 
-	data, pager := adminOperationLog.Paginate(c, 5)
+	data, pager := adminOperationLog.Paginate(c, GetPerPage(c))
 
 	response.Data(c, gin.H{
 		"data":  data,
