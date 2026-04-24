@@ -66,10 +66,11 @@ func (uc *AdminUserController) Store(c *gin.Context) {
 		Password: request.Password,
 		Name:     request.Name,
 		Roles:    roles,
+		AvatarId: cast.ToUint64(request.AvatarId),
 	}
 
 	if request.AvatarId > 0 {
-		model.AvatarId = cast.ToUint64(request.AvatarId)
+
 	}
 
 	if err := tx.Create(&model).Error; err != nil {
