@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/cast"
 	"github.com/zero7cola/gin-admin-core/internal"
 	"github.com/zero7cola/gin-admin-core/model/adminUser"
 	"github.com/zero7cola/gin-admin-core/pkg/auth"
@@ -95,4 +96,23 @@ func (ac *AdminAuthController) ShowCaptcha(c *gin.Context) {
 		"captcha_id":    id,
 		"captcha_image": b64s,
 	})
+}
+
+func (ac *AdminAuthController) UpdateProfile(c *gin.Context) {
+
+	user := auth.CurrentAdminUser(c)
+
+	user.Username = c.PostForm("username")
+
+	if pass := c.PostForm("password"); pass != "" {
+		user.Password = pass
+	}
+
+	if avatarId := c.PostForm("avatarId"); avatarId != "" {
+		user.AvatarId = cast.ToUint64(avatarId)
+	}
+
+	user.Save()
+
+	response.Data(c, user)
 }

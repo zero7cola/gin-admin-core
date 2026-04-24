@@ -6,6 +6,7 @@ import (
 	"github.com/zero7cola/gin-admin-core/model/adminMenu"
 	"github.com/zero7cola/gin-admin-core/model/adminPermission"
 	"github.com/zero7cola/gin-admin-core/model/adminRole"
+	"github.com/zero7cola/gin-admin-core/model/file"
 	"github.com/zero7cola/gin-admin-core/pkg/database"
 	"github.com/zero7cola/gin-admin-core/pkg/hash"
 	"github.com/zero7cola/gin-admin-core/pkg/paginator"
@@ -19,7 +20,8 @@ type AdminUser struct {
 	Username      string                            `json:"username" gorm:"username"`
 	Password      string                            `json:"-" gorm:"password"`
 	Name          string                            `json:"name" gorm:"name"`
-	Avatar        string                            `json:"avatar" gorm:"avatar"`
+	AvatarFile    file.File                         `json:"file" gorm:"foreignKey:AvatarId;references:ID"`
+	AvatarId      uint64                            `json:"avatar_id" gorm:"avatar_id"`
 	RememberToken string                            `json:"-" gorm:"remember_token"`
 	Roles         []adminRole.AdminRole             `json:"roles" gorm:"many2many:admin_role_users;foreignKey:ID;joinForeignKey:UserID;references:ID;joinReferences:RoleID"`
 	Permissions   []adminPermission.AdminPermission `json:"permissions" gorm:"-"`
@@ -108,7 +110,7 @@ func (model *AdminUser) IsSuperAdmin() bool {
 }
 
 func Get(idstr string) (model AdminUser) {
-	database.DB.Where("id", idstr).Preload("Roles").First(&model)
+	database.DB.Where("id", idstr).Preload("Roles").Preload("AvatarFile").First(&model)
 	return
 }
 
