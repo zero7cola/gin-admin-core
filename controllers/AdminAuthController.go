@@ -112,9 +112,11 @@ func (ac *AdminAuthController) UpdateProfile(c *gin.Context) {
 		user.Name = request.Name
 	}
 
-	if !helpers.Empty(request.Password) && !helpers.Empty(request.ConfirmPassword) {
+	if !helpers.Empty(request.Password) {
 		if request.Password == request.ConfirmPassword {
 			user.Password = request.Password
+		} else {
+			response.Fail(c, "两次输入的密码不一致")
 		}
 	}
 
