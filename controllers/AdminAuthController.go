@@ -112,12 +112,23 @@ func (ac *AdminAuthController) UpdateProfile(c *gin.Context) {
 		user.Name = request.Name
 	}
 
+	user.Save()
+
+	response.Data(c, user)
+}
+
+func (ac *AdminAuthController) UpdatePassword(c *gin.Context) {
+
+	user := auth.CurrentAdminUser(c)
+
+	// 验证
+	request := requests.AdminUserProfilePasswordUpdateRequest{}
+	if ok := requests.ValidateFunc(c, &request, requests.VerityAdminUserProfilePasswordUpdate); !ok {
+		return
+	}
+
 	if !helpers.Empty(request.Password) {
-		if request.Password == request.ConfirmPassword {
-			user.Password = request.Password
-		} else {
-			response.Fail(c, "两次输入的密码不一致")
-		}
+		user.Password = request.Password
 	}
 
 	user.Save()

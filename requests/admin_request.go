@@ -360,9 +360,7 @@ func VerityAdminFileUpdate(obj interface{}) map[string][]string {
 }
 
 type AdminUserProfileUpdateRequest struct {
-	Name            string `json:"name" validate:"required"`
-	Password        string `json:"password" validate:"min=6"`
-	ConfirmPassword string `json:"confirm_password" validate:"eqfield=Password"`
+	Name string `json:"name" validate:"required"`
 }
 
 func VerityAdminUserProfileUpdate(obj interface{}) map[string][]string {
@@ -371,11 +369,28 @@ func VerityAdminUserProfileUpdate(obj interface{}) map[string][]string {
 		"Name": {
 			"required": "昵称为必填项，参数名称 name",
 		},
+	}
+
+	errors := ValidateStruct(obj, messages)
+
+	return errors
+}
+
+type AdminUserProfilePasswordUpdateRequest struct {
+	Password        string `json:"password" validate:"required;min=6"`
+	ConfirmPassword string `json:"confirm_password" validate:"eqfield=Password"`
+}
+
+func VerityAdminUserProfilePasswordUpdate(obj interface{}) map[string][]string {
+
+	messages := map[string]map[string]string{
 		"Password": {
-			"min": "密码最少为 6 位",
+			"required": "密码为必填项，参数名称 password",
+			"min":      "密码最少为 6 位",
 		},
 		"ConfirmPassword": {
-			"eqfield": "与 password 不一致",
+			"required": "确认密码为必填项，参数名称 confirm_password",
+			"eqfield":  "与 password 不一致",
 		},
 	}
 

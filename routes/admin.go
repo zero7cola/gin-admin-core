@@ -32,6 +32,7 @@ func RegisterAdminRoutes(admin *gin.RouterGroup) {
 		authGroup.POST("/refresh-token", lgc.RefreshToken)
 		authGroup.GET("/current", lgc.Current)
 		authGroup.POST("/profile", lgc.UpdateProfile)
+		authGroup.POST("/profile-pass", lgc.UpdatePassword)
 		authGroup.POST("/logout", lgc.Logout)
 		authGroup.GET("/captcha", lgc.ShowCaptcha)
 
