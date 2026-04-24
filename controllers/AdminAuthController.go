@@ -4,11 +4,11 @@ import (
 	"fmt"
 
 	"github.com/gin-gonic/gin"
-	"github.com/spf13/cast"
 	"github.com/zero7cola/gin-admin-core/internal"
 	"github.com/zero7cola/gin-admin-core/model/adminUser"
 	"github.com/zero7cola/gin-admin-core/pkg/auth"
 	"github.com/zero7cola/gin-admin-core/pkg/captcha"
+	"github.com/zero7cola/gin-admin-core/pkg/helpers"
 	"github.com/zero7cola/gin-admin-core/pkg/jwt"
 	"github.com/zero7cola/gin-admin-core/pkg/logger"
 	"github.com/zero7cola/gin-admin-core/pkg/response"
@@ -102,14 +102,20 @@ func (ac *AdminAuthController) UpdateProfile(c *gin.Context) {
 
 	user := auth.CurrentAdminUser(c)
 
-	user.Username = c.PostForm("username")
-
-	if pass := c.PostForm("password"); pass != "" {
-		user.Password = pass
+	// 验证
+	request := requests.AdminUserProfileUpdateRequest{}
+	if ok := requests.ValidateFunc(c, &request, requests.VerityAdminUserProfileUpdate); !ok {
+		return
 	}
 
-	if avatarId := c.PostForm("avatarId"); avatarId != "" {
-		user.AvatarId = cast.ToUint64(avatarId)
+	if !helpers.Empty(request.Name) {
+		user.Name = request.Name
+	}
+
+	if !helpers.Empty(request.Password) && !helpers.Empty(request.ConfirmPassword) {
+		if request.Password == request.ConfirmPassword {
+			user.Password = request.Password
+		}
 	}
 
 	user.Save()

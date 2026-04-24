@@ -31,6 +31,7 @@ func RegisterAdminRoutes(admin *gin.RouterGroup) {
 		authGroup.POST("/login", middlewares.GuestJWT(), lgc.Login)
 		authGroup.POST("/refresh-token", lgc.RefreshToken)
 		authGroup.GET("/current", lgc.Current)
+		authGroup.POST("/profile", lgc.UpdateProfile)
 		authGroup.POST("/logout", lgc.Logout)
 		authGroup.GET("/captcha", lgc.ShowCaptcha)
 
