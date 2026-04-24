@@ -13,6 +13,7 @@ type AdminUserStoreRequest struct {
 	ConfirmPassword string `json:"confirm_password" validate:"required,eqfield=Password"`
 	Name            string `json:"name" validate:"required"`
 	RoleIDs         []uint `json:"role_ids"`
+	AvatarId        uint   `json:"avatar_id" validate:"required"`
 }
 
 func VerityAdminUserStore(obj interface{}) map[string][]string {
@@ -47,6 +48,7 @@ type AdminUserUpdateRequest struct {
 	Password string `json:"password" validate:"omitempty,min=6"`
 	Name     string `json:"name"`
 	RoleIDs  []uint `json:"role_ids"`
+	AvatarId uint   `json:"avatar_id" validate:"required"`
 }
 
 func VerityAdminUserUpdate(obj interface{}) map[string][]string {

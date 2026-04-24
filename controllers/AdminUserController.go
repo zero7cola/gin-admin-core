@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"fmt"
+	"github.com/spf13/cast"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -67,6 +68,10 @@ func (uc *AdminUserController) Store(c *gin.Context) {
 		Roles:    roles,
 	}
 
+	if request.AvatarId > 0 {
+		model.AvatarId = cast.ToUint64(request.AvatarId)
+	}
+
 	if err := tx.Create(&model).Error; err != nil {
 		tx.Rollback()
 		response.BadRequest(c, err, "创建账号失败")
@@ -129,6 +134,10 @@ func (uc *AdminUserController) Update(c *gin.Context) {
 
 	if !helpers.Empty(request.Name) {
 		userModel.Name = request.Name
+	}
+
+	if request.AvatarId > 0 {
+		userModel.AvatarId = cast.ToUint64(request.AvatarId)
 	}
 
 	//fmt.Printf("%T", userModel)
