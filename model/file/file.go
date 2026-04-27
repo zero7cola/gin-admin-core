@@ -58,7 +58,7 @@ func (model *File) GetFileFullUrl() string {
 			path := strings.ReplaceAll(model.Path, setting.GlobalSetting.Storage.Local.Path, setting.GlobalSetting.Storage.Local.StaticPrefix)
 			url = setting.GlobalSetting.Storage.Local.Domain
 			url = url + "/" + path
-		} else {
+		} else if storageDrive == "oss" {
 			url = setting.GlobalSetting.Storage.Oss.Domain
 			url = url + "/" + model.Path
 		}
