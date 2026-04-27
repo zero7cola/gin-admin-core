@@ -2,6 +2,8 @@
 package routes
 
 import (
+	"fmt"
+
 	"github.com/zero7cola/gin-admin-core/setting"
 
 	"github.com/gin-gonic/gin"
@@ -16,7 +18,11 @@ func RegisterStaticRoutes(r *gin.Engine) {
 		staticPath = setting.GlobalSetting.Storage.Local.StaticPrefix
 	}
 
-	// 本地文件
-	r.Static("/"+staticPath, "storage/files")
+	staticRoute := fmt.Sprintf("/%s", staticPath)
+
+	if HasRoute(r, staticRoute) {
+		// 本地文件
+		r.Static(staticRoute, "storage/files")
+	}
 
 }

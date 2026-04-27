@@ -98,3 +98,18 @@ func RegisterAdminRoutes(admin *gin.RouterGroup) {
 	}
 
 }
+
+func HasRoute(r *gin.Engine, path string, ops ...string) bool {
+	for _, route := range r.Routes() {
+
+		if len(ops) > 0 && route.Method == ops[0] && route.Path == path {
+			return true
+		} else {
+			if route.Path == path {
+				return true
+			}
+		}
+
+	}
+	return false
+}
