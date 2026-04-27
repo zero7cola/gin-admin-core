@@ -168,13 +168,21 @@ func internalInit(c *InitConfig) {
 	}
 
 	//
+	//err := insertInitData()
+	//
+	//if err != nil {
+	//	logger.LogIf(err)
+	//	panic(err)
+	//}
+
+}
+
+func InsertAdminInitData() {
 	err := insertInitData()
 
-	if err != nil {
-		logger.LogIf(err)
-		panic(err)
-	}
+	logger.LogIf(err)
 
+	panic(err)
 }
 
 func insertInitData() error {
