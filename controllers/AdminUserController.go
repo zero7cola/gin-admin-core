@@ -2,8 +2,9 @@ package controllers
 
 import (
 	"fmt"
-	"github.com/spf13/cast"
 	"net/http"
+
+	"github.com/spf13/cast"
 
 	"github.com/gin-gonic/gin"
 	"github.com/zero7cola/gin-admin-core/model/adminRole"
@@ -66,7 +67,7 @@ func (uc *AdminUserController) Store(c *gin.Context) {
 		Password: request.Password,
 		Name:     request.Name,
 		Roles:    roles,
-		AvatarId: cast.ToUint64(request.AvatarId),
+		AvatarId: helpers.Uint64Ptr(cast.ToUint64(request.AvatarId)),
 	}
 
 	if request.AvatarId > 0 {
@@ -138,7 +139,7 @@ func (uc *AdminUserController) Update(c *gin.Context) {
 	}
 
 	if request.AvatarId > 0 {
-		userModel.AvatarId = cast.ToUint64(request.AvatarId)
+		userModel.AvatarId = helpers.Uint64Ptr(cast.ToUint64(request.AvatarId))
 	}
 
 	//fmt.Printf("%T", userModel)

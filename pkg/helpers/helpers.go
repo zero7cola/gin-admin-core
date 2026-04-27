@@ -169,3 +169,7 @@ func AppendIgnorePaths(v []string) {
 
 	globalRouter.ignorePaths = append(globalRouter.ignorePaths, v...)
 }
+
+func Uint64Ptr(v uint64) *uint64 {
+	return &v
+}
