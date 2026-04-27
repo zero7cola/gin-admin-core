@@ -13,10 +13,10 @@ type AdminOperationLog struct {
 	model.BaseModel
 	AdminUser adminUser.AdminUser `json:"admin_user" gorm:"foreignKey:UserId;references:ID"`
 	UserId    uint64              `json:"user_id" gorm:"user_id"`
-	Path      string              `json:"path" gorm:"column:path;index"`
+	Path      string              `json:"path" gorm:"column:path;index:i_path"`
 	Url       string              `json:"url" gorm:"url"`
-	Method    string              `json:"method" gorm:"column:method;index"`
-	Ip        string              `json:"ip" gorm:"column:ip,index"`
+	Method    string              `json:"method" gorm:"column:method;index:i_method"`
+	Ip        string              `json:"ip" gorm:"column:ip,index:i_ip"`
 	Input     string              `json:"input" gorm:"type:text;column:input"`
 	model.CommonTimestampsField
 }
