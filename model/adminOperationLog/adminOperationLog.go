@@ -15,8 +15,8 @@ type AdminOperationLog struct {
 	UserId    uint64              `json:"user_id" gorm:"column:user_id"`
 	Path      string              `json:"path" gorm:"column:path;type:varchar(255);index"`
 	Url       string              `json:"url" gorm:"column:url;type:text"`
-	Method    string              `json:"method" gorm:"column:method;type:varchar(100);index"`
-	Ip        string              `json:"ip" gorm:"column:ip;type:varchar(100);index"`
+	Method    string              `json:"method" gorm:"column:method;type:varchar(255);index"`
+	Ip        string              `json:"ip" gorm:"column:ip;type:varchar(255);index"`
 	Input     string              `json:"input" gorm:"type:longtext;column:input"`
 	model.CommonTimestampsField
 }

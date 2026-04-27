@@ -17,9 +17,9 @@ import (
 
 type AdminUser struct {
 	model.BaseModel
-	Username      string                            `json:"username" gorm:"column:username;type:varchar(100)"`
+	Username      string                            `json:"username" gorm:"column:username;type:varchar(255)"`
 	Password      string                            `json:"-" gorm:"column:password;type:varchar(255)"`
-	Name          string                            `json:"name" gorm:"column:name;type:varchar(100)"`
+	Name          string                            `json:"name" gorm:"column:name;type:varchar(255)"`
 	AvatarFile    *file.File                        `json:"avatar" gorm:"foreignKey:AvatarId;references:ID"`
 	AvatarId      *uint64                           `json:"avatar_id" gorm:"column:avatar_id"`
 	RememberToken string                            `json:"-" gorm:"column:remember_token;type:varchar(255)"`

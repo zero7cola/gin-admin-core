@@ -12,8 +12,8 @@ import (
 
 type AdminRole struct {
 	model.BaseModel
-	Name        string                            `json:"name" gorm:"column:name;type:varchar(100)"`
-	Slug        string                            `json:"slug" gorm:"column:slug;type:varchar(100)"`
+	Name        string                            `json:"name" gorm:"column:name;type:varchar(255)"`
+	Slug        string                            `json:"slug" gorm:"column:slug;type:varchar(255)"`
 	Permissions []adminPermission.AdminPermission `json:"permissions" gorm:"many2many:admin_role_permissions;foreignKey:ID;joinForeignKey:RoleID;references:ID;joinReferences:PermissionID"`
 	Menus       []adminMenu.AdminMenu             `json:"menus" gorm:"many2many:admin_role_menus;foreignKey:ID;joinForeignKey:RoleID;references:ID;joinReferences:MenuID"`
 	model.CommonTimestampsField
