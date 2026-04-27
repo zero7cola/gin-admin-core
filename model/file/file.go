@@ -25,7 +25,7 @@ type File struct {
 	Size         int64      `gorm:"column:size" json:"size"`
 	Storage      string     `gorm:"column:storage;type:varchar(100);index" json:"storage"`
 	Path         string     `gorm:"column:path;type:text" json:"-"`
-	Type         int        `gorm:"column:type" json:"type"`
+	Type         int        `gorm:"column:type;type:tinyint" json:"type"`
 	Ext          string     `gorm:"column:ext;type:varchar(100)" json:"ext"`
 	UserId       uint64     `gorm:"column:user_id" json:"-"`
 	Url          string     `gorm:"column:url;type:text" json:"url"`
