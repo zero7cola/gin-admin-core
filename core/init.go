@@ -168,26 +168,26 @@ func internalInit(c *InitConfig) {
 	}
 
 	//
-	//err := insertInitData(database.DB)
-	//
-	//if err != nil {
-	//	logger.LogIf(err)
-	//	panic(err)
-	//}
+	err := insertInitData()
+
+	if err != nil {
+		logger.LogIf(err)
+		panic(err)
+	}
 
 }
 
-func InsertAdminInitData(db *gorm.DB) {
-	err := insertInitData(db)
+func InsertAdminInitData() {
+	err := insertInitData()
 
 	logger.LogIf(err)
 
 	panic(err)
 }
 
-func insertInitData(db *gorm.DB) error {
+func insertInitData() error {
 
-	err := db.AutoMigrate(
+	err := database.DB.AutoMigrate(
 		&adminUser.AdminUser{},
 		&adminRole.AdminRole{},
 		&adminMenu.AdminMenu{},
@@ -201,13 +201,13 @@ func insertInitData(db *gorm.DB) error {
 		return err
 	}
 
-	err = seedAdminUser(db)
+	err = seedAdminUser()
 
 	if err != nil {
 		return err
 	}
 
-	err = seedAdminMenus(db)
+	err = seedAdminMenus()
 
 	if err != nil {
 		return err
@@ -216,19 +216,19 @@ func insertInitData(db *gorm.DB) error {
 	return nil
 }
 
-func insertIgnoreOrUpdate(db *gorm.DB, data interface{}, isUp bool) error {
+func insertIgnoreOrUpdate(data interface{}, isUp bool) error {
 	if isUp {
-		return db.Clauses(clause.OnConflict{
+		return database.DB.Clauses(clause.OnConflict{
 			UpdateAll: true,
 		}).Create(data).Error
 	}
 
-	return db.Clauses(clause.OnConflict{
+	return database.DB.Clauses(clause.OnConflict{
 		DoNothing: true,
 	}).Create(data).Error
 }
 
-func seedAdminUser(db *gorm.DB) error {
+func seedAdminUser() error {
 	var users = []adminUser.AdminUser{
 		{
 			BaseModel: model.BaseModel{
@@ -240,10 +240,10 @@ func seedAdminUser(db *gorm.DB) error {
 		},
 	}
 
-	return insertIgnoreOrUpdate(db, users, false)
+	return insertIgnoreOrUpdate(users, false)
 }
 
-func seedAdminMenus(db *gorm.DB) error {
+func seedAdminMenus() error {
 	var menus = []adminMenu.AdminMenu{
 		{
 			BaseModel: model.BaseModel{
@@ -327,5 +327,5 @@ func seedAdminMenus(db *gorm.DB) error {
 		},
 	}
 
-	return insertIgnoreOrUpdate(db, menus, false)
+	return insertIgnoreOrUpdate(menus, false)
 }
