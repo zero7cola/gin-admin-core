@@ -13,7 +13,7 @@ type AdminUserStoreRequest struct {
 	ConfirmPassword string `json:"confirm_password" validate:"required,eqfield=Password"`
 	Name            string `json:"name" validate:"required"`
 	RoleIDs         []uint `json:"role_ids"`
-	AvatarId        uint   `json:"avatar_id"`
+	AvatarId        uint   `json:"avatar_id" validate:"omitempty,numeric"`
 }
 
 func VerityAdminUserStore(obj interface{}) map[string][]string {
@@ -34,6 +34,9 @@ func VerityAdminUserStore(obj interface{}) map[string][]string {
 		"Name": {
 			"required": "昵称为必填项，参数名称 name",
 		},
+		"AvatarId": {
+			"numeric": "头像id 为数字类型",
+		},
 	}
 
 	errors := ValidateStruct(obj, messages)
@@ -48,7 +51,7 @@ type AdminUserUpdateRequest struct {
 	Password string `json:"password" validate:"omitempty,min=6"`
 	Name     string `json:"name"`
 	RoleIDs  []uint `json:"role_ids"`
-	AvatarId uint   `json:"avatar_id" validate:"required"`
+	AvatarId uint   `json:"avatar_id" validate:"omitempty,numeric"`
 }
 
 func VerityAdminUserUpdate(obj interface{}) map[string][]string {
@@ -59,6 +62,9 @@ func VerityAdminUserUpdate(obj interface{}) map[string][]string {
 		},
 		"Password": {
 			"min": "密码最少为 6 位",
+		},
+		"AvatarId": {
+			"numeric": "头像id 为数字类型",
 		},
 	}
 
