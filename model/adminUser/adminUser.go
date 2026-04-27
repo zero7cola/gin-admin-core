@@ -21,7 +21,7 @@ type AdminUser struct {
 	Password      string                            `json:"-" gorm:"password"`
 	Name          string                            `json:"name" gorm:"name"`
 	AvatarFile    *file.File                        `json:"avatar" gorm:"foreignKey:AvatarId;references:ID"`
-	AvatarId      uint64                            `json:"avatar_id" gorm:"avatar_id"`
+	AvatarId      *uint64                           `json:"avatar_id" gorm:"avatar_id"`
 	RememberToken string                            `json:"-" gorm:"remember_token"`
 	Roles         []adminRole.AdminRole             `json:"roles" gorm:"many2many:admin_role_users;foreignKey:ID;joinForeignKey:UserID;references:ID;joinReferences:RoleID"`
 	Permissions   []adminPermission.AdminPermission `json:"permissions" gorm:"-"`

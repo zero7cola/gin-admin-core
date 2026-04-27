@@ -13,7 +13,7 @@ type AdminUserStoreRequest struct {
 	ConfirmPassword string `json:"confirm_password" validate:"required,eqfield=Password"`
 	Name            string `json:"name" validate:"required"`
 	RoleIDs         []uint `json:"role_ids"`
-	AvatarId        uint   `json:"avatar_id" validate:"required"`
+	AvatarId        uint   `json:"avatar_id"`
 }
 
 func VerityAdminUserStore(obj interface{}) map[string][]string {
