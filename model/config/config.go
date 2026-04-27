@@ -11,9 +11,9 @@ import (
 
 type Config struct {
 	model.BaseModel
-	ConfigKey   string `gorm:"column:config_key,index" json:"config_key"`
+	ConfigKey   string `gorm:"column:config_key;index" json:"config_key"`
 	ConfigValue string `gorm:"column:config_value" json:"config_value"`
-	ConfigLabel string `gorm:"column:config_label,index" json:"config_label"`
+	ConfigLabel string `gorm:"column:config_label;index" json:"config_label"`
 	Type        int    `gorm:"column:type" json:"type"`
 	Options     string `gorm:"column:options" json:"options"`
 	Describe    string `gorm:"column:describe" json:"describe"`
