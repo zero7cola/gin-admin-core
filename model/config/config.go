@@ -11,19 +11,19 @@ import (
 
 type Config struct {
 	model.BaseModel
-	ConfigKey   string `gorm:"column:config_key;index" json:"config_key"`
+	ConfigKey   string `gorm:"column:config_key;index;type:varchar(100)" json:"config_key"`
 	ConfigValue string `gorm:"column:config_value" json:"config_value"`
-	ConfigLabel string `gorm:"column:config_label;index" json:"config_label"`
+	ConfigLabel string `gorm:"column:config_label;type:varchar(100);index" json:"config_label"`
 	Type        int    `gorm:"column:type" json:"type"`
-	Options     string `gorm:"column:options" json:"options"`
+	Options     string `gorm:"column:options;type:text" json:"options"`
 	Describe    string `gorm:"column:describe" json:"describe"`
 	IsCanFront  int    `gorm:"column:is_can_front" json:"is_can_front"`
 	IsRequired  uint   `gorm:"column:is_required" json:"is_required"`
 	Order       uint   `gorm:"column:order" json:"order"`
 	GroupId     uint   `gorm:"column:group_id" json:"group_id"`
 	State       uint   `gorm:"column:state" json:"state"`
-	ShowType    string `gorm:"column:show_type" json:"show_type"`
-	Placeholder string `gorm:"column:placeholder" json:"placeholder"`
+	ShowType    string `gorm:"column:show_type;type:varchar(255)" json:"show_type"`
+	Placeholder string `gorm:"column:placeholder;type:varchar(255)" json:"placeholder"`
 	model.CommonTimestampsField
 }
 

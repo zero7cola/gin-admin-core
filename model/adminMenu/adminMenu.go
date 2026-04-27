@@ -10,11 +10,11 @@ import (
 
 type AdminMenu struct {
 	model.BaseModel
-	ParentId uint64 `json:"parent_id" gorm:"parent_id"`
-	Order    uint64 `json:"order" gorm:"order"`
-	Name     string `json:"name" gorm:"name"`
-	Icon     string `json:"icon" gorm:"icon"`
-	Uri      string `json:"uri" gorm:"uri"`
+	ParentId uint64 `json:"parent_id" gorm:"column:parent_id;type:varchar(255)"`
+	Order    uint64 `json:"order" gorm:"column:order"`
+	Name     string `json:"name" gorm:"column:name;type:varchar(255)"`
+	Icon     string `json:"icon" gorm:"column:icon;type:varchar(255)"`
+	Uri      string `json:"uri" gorm:"column:uri;type:varchar(255)"`
 	model.CommonTimestampsField
 }
 

@@ -17,12 +17,12 @@ import (
 
 type AdminUser struct {
 	model.BaseModel
-	Username      string                            `json:"username" gorm:"username"`
-	Password      string                            `json:"-" gorm:"password"`
-	Name          string                            `json:"name" gorm:"name"`
+	Username      string                            `json:"username" gorm:"column:username;type:varchar(100)"`
+	Password      string                            `json:"-" gorm:"column:password;type:varchar(255)"`
+	Name          string                            `json:"name" gorm:"column:name;type:varchar(100)"`
 	AvatarFile    *file.File                        `json:"avatar" gorm:"foreignKey:AvatarId;references:ID"`
-	AvatarId      *uint64                           `json:"avatar_id" gorm:"avatar_id"`
-	RememberToken string                            `json:"-" gorm:"remember_token"`
+	AvatarId      *uint64                           `json:"avatar_id" gorm:"column:avatar_id"`
+	RememberToken string                            `json:"-" gorm:"column:remember_token;type:varchar(255)"`
 	Roles         []adminRole.AdminRole             `json:"roles" gorm:"many2many:admin_role_users;foreignKey:ID;joinForeignKey:UserID;references:ID;joinReferences:RoleID"`
 	Permissions   []adminPermission.AdminPermission `json:"permissions" gorm:"-"`
 	Menus         []adminMenu.AdminMenu             `json:"menus" gorm:"-"`
