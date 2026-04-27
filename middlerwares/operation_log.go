@@ -34,6 +34,10 @@ func OperationLog() gin.HandlerFunc {
 				adminLog.UserId = cast.ToUint64(auth.CurrentAdminUID(c))
 			}
 
+			if adminLog.UserId <= 0 {
+				return
+			}
+
 			fullUrl := c.Request.URL.Path
 			query := c.Request.URL.RawQuery
 
