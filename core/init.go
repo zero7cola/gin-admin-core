@@ -168,7 +168,7 @@ func internalInit(c *InitConfig) {
 	}
 
 	//
-	//err := insertInitData()
+	//err := insertInitData(database.DB)
 	//
 	//if err != nil {
 	//	logger.LogIf(err)
@@ -177,17 +177,17 @@ func internalInit(c *InitConfig) {
 
 }
 
-func InsertAdminInitData() {
-	err := insertInitData()
+func InsertAdminInitData(db *gorm.DB) {
+	err := insertInitData(db)
 
 	logger.LogIf(err)
 
 	panic(err)
 }
 
-func insertInitData() error {
+func insertInitData(db *gorm.DB) error {
 
-	err := database.DB.AutoMigrate(
+	err := db.AutoMigrate(
 		&adminUser.AdminUser{},
 		&adminRole.AdminRole{},
 		&adminMenu.AdminMenu{},
@@ -201,13 +201,13 @@ func insertInitData() error {
 		return err
 	}
 
-	err = seedAdminUser()
+	err = seedAdminUser(db)
 
 	if err != nil {
 		return err
 	}
 
-	err = seedAdminMenus()
+	err = seedAdminMenus(db)
 
 	if err != nil {
 		return err
@@ -216,19 +216,19 @@ func insertInitData() error {
 	return nil
 }
 
-func insertIgnoreOrUpdate(data interface{}, isUp bool) error {
+func insertIgnoreOrUpdate(db *gorm.DB, data interface{}, isUp bool) error {
 	if isUp {
-		return database.DB.Clauses(clause.OnConflict{
+		return db.Clauses(clause.OnConflict{
 			UpdateAll: true,
 		}).Create(data).Error
 	}
 
-	return database.DB.Clauses(clause.OnConflict{
+	return db.Clauses(clause.OnConflict{
 		DoNothing: true,
 	}).Create(data).Error
 }
 
-func seedAdminUser() error {
+func seedAdminUser(db *gorm.DB) error {
 	var users = []adminUser.AdminUser{
 		{
 			BaseModel: model.BaseModel{
@@ -240,10 +240,10 @@ func seedAdminUser() error {
 		},
 	}
 
-	return insertIgnoreOrUpdate(users, false)
+	return insertIgnoreOrUpdate(db, users, false)
 }
 
-func seedAdminMenus() error {
+func seedAdminMenus(db *gorm.DB) error {
 	var menus = []adminMenu.AdminMenu{
 		{
 			BaseModel: model.BaseModel{
@@ -327,5 +327,5 @@ func seedAdminMenus() error {
 		},
 	}
 
-	return insertIgnoreOrUpdate(menus, false)
+	return insertIgnoreOrUpdate(db, menus, false)
 }
