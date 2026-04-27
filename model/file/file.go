@@ -18,12 +18,12 @@ import (
 
 type File struct {
 	model.BaseModel
-	OriginName   string     `gorm:"column:origin_name" json:"origin_name"`
+	OriginName   string     `gorm:"column:origin_name,index" json:"origin_name"`
 	Name         string     `gorm:"column:name" json:"name"`
 	Key          string     `gorm:"column:key" json:"key"`
 	GroupId      int        `gorm:"column:group_id;index" json:"group_id"`
 	Size         int64      `gorm:"column:size" json:"size"`
-	Storage      string     `gorm:"column:storage" json:"storage"`
+	Storage      string     `gorm:"column:storage,index" json:"storage"`
 	Path         string     `gorm:"column:path" json:"-"`
 	Type         int        `gorm:"column:type" json:"type"`
 	Ext          string     `gorm:"column:ext" json:"ext"`

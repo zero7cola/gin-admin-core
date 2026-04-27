@@ -11,9 +11,9 @@ import (
 
 type Config struct {
 	model.BaseModel
-	ConfigKey   string `gorm:"column:config_key" json:"config_key"`
+	ConfigKey   string `gorm:"column:config_key,index" json:"config_key"`
 	ConfigValue string `gorm:"column:config_value" json:"config_value"`
-	ConfigLabel string `gorm:"column:config_label" json:"config_label"`
+	ConfigLabel string `gorm:"column:config_label,index" json:"config_label"`
 	Type        int    `gorm:"column:type" json:"type"`
 	Options     string `gorm:"column:options" json:"options"`
 	Describe    string `gorm:"column:describe" json:"describe"`
@@ -67,11 +67,11 @@ func Paginate(c *gin.Context, perPage int) (users []Config, paging paginator.Pag
 	db := database.DB.Model(Config{})
 
 	if c.Query("config_key") != "" {
-		db = db.Where("config_key LIKE ?", "%"+c.Query("config_key")+"%")
+		db = db.Where("config_key LIKE ?", c.Query("config_key")+"%")
 	}
 
 	if c.Query("config_label") != "" {
-		db = db.Where("config_label LIKE ?", "%"+c.Query("config_label")+"%")
+		db = db.Where("config_label LIKE ?", c.Query("config_label")+"%")
 	}
 
 	paging = paginator.Paginate(
