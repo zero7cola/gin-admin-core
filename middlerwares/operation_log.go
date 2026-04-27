@@ -45,6 +45,7 @@ func OperationLog() gin.HandlerFunc {
 			adminLog.Url = fullUrl
 			adminLog.Method = c.Request.Method
 			adminLog.Input = string(requestBody)
+			adminLog.Ip = c.ClientIP()
 
 			go func() {
 				adminLog.Create()
